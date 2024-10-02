@@ -13,7 +13,11 @@ export default {
       },
       colors: {
         customBlue: '#0873BB',  
+
       },
+      screen: {
+        'defaultsize': '900px'
+      }
     },
   },
   plugins: [],
