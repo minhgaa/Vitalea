@@ -12,8 +12,8 @@ export default {
         poppin: ['Poppins']
       },
       colors: {
-        customBlue: '#0873BB',  
-
+        customBlue: '#0873BB', 
+        customBg: '#F7F9FB',
       },
       screen: {
         'defaultsize': '900px'

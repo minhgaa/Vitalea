@@ -95,14 +95,16 @@ const Signup = () => {
                                                 Sign up
                                             </label>
                                         </div>
-                                        <div className='grid grid-cols-2 gap-4 w-full max-w-md p-4 bg-white rounded-lg shadow-lg'>
-                                            <div className='flex flex-col h-full w-full'>
-                                                <label className="font-poppin font-bold text-xs">Name</label>
-                                                <input className="mt-3 mb-5 h-[50px] w-5/6 rounded-lg bg-white border-[0.3px] border-gray-500"></input>
-                                            </div>
-                                            <div className='flex flex-col h-full w-full'>
-                                                <label className="font-poppin font-bold text-xs">Username</label>
-                                                <input className="mt-3 h-[50px] w-5/6 rounded-lg bg-white border-[0.3px] border-gray-500"></input>
+                                        <div className='grid grid-cols-1 max-w-md'>
+                                            <div className='flex justify-between gap-6 w-full'>
+                                                <div className='flex flex-col w-full'>
+                                                    <label className="font-poppin font-bold text-xs">Name</label>
+                                                    <input className="mt-3  mb-5 h-[50px] w-full rounded-lg bg-white border-[0.3px] border-gray-500" />
+                                                </div>
+                                                <div className='flex flex-col w-full'>
+                                                    <label className="font-poppin font-bold text-xs">Username</label>
+                                                    <input className="mt-3 h-[50px] w-full rounded-lg bg-white border-[0.3px] border-gray-500" />
+                                                </div>
                                             </div>
                                             <div className='col-span-2'>
                                                 <label className="font-poppin font-bold text-xs">Email</label>
