@@ -10,7 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.9",
+    "@headlessui/tailwindcss": "^0.2.1",
+    "@types/react-icons": "^3.0.0",
     "framer-motion": "^11.9.0",
+    "headlessui": "^0.0.0",
+    "heroicons": "^2.1.5",
     "react": "^18.3.1",
     "react-datepicker": "^7.4.0",
     "react-dom": "^18.3.1",

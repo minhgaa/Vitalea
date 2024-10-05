@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../components/header';
 import Nav from '../components/Nav/nav';
-import InfoCard from '../components/infocard';
+import InfoCard from '../custom/infocard';
 import DayGrid from '../custom/daygrid';
 import CustomBarChart from '../custom/custombarchart'; // Import CustomBarChart
 
