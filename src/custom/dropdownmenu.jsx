@@ -1,6 +1,6 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import React, { useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import React, { useState } from 'react';
 
 const Dropdownmenu = ({ initialLabel, data }) => {
     const [label, setLabel] = useState(data[0]); 

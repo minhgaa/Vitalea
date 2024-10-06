@@ -14,7 +14,7 @@ function App() {
   return (
     <UserContextProvider>
       <Routes>
-        <Route path='/' element={<Appoiments />} />
+        <Route path='/' element={<Patients />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/mainpage' element={<Mainpage />} />
