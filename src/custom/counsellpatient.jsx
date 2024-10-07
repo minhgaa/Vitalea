@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 
 const CounselingCard = ({ profile, name, date, time, sessionTitle }) => {
     return (
@@ -19,6 +20,7 @@ const CounselingGrid = ({ sessions }) => {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 p-4">
             {sessions.map((session, index) => (
+                <Link to="/personal" type="button" className=''>
                 <CounselingCard
                     key={index}
                     profile={session.profile}
@@ -27,6 +29,7 @@ const CounselingGrid = ({ sessions }) => {
                     time={session.time}
                     sessionTitle={session.sessionTitle}
                 />
+                </Link>
             ))}
         </div>
     );

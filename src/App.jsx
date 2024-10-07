@@ -8,6 +8,7 @@ import Appoiments from './pages/appoiments'
 import Patients from './pages/patients'
 import Messages from './pages/messages'
 import Report from './pages/report'
+import Personal from './pages/personal'
 import Settings from './pages/settings'
 import { UserContextProvider } from './userContext'
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path='/messages' element={<Messages />} />
         <Route path='/report' element={<Report />} />
         <Route path='/settings' element={<Settings />} />
+        <Route path='/personal' element={<Personal />} />
       </Routes>
     </UserContextProvider>
   )

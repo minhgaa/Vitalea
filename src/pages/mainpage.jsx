@@ -177,11 +177,11 @@ const Mainpage = () => {
                                                         alt={request.name}
                                                         className="w-10 h-10 rounded-full mr-4"
                                                     />
-                                                    <div>
+                                                    <div className='w-[80%]'>
                                                         <p className="font-semibold text-xs">{request.name}</p>
                                                         <p className="text-xs text-gray-500">{request.dateTime}</p>
                                                         <p className="text-xs text-gray-500">{request.counselling}</p>
-                                                        <div className='space-x-2'>
+                                                        <div className='space-x-2 mt-3'>
                                                             <button
                                                                 className="bg-customBlue text-white w-[45%] h-[25px] rounded-md text-xs hover:bg-green-600"
                                                                 onClick={() => handleApprove(request.id)}
