@@ -3,177 +3,177 @@ import Header from "../components/header";
 import Nav from "../components/Nav/nav";
 import React from "react";
 
+const item = [
+  { label: "Dashboard", icon: "src/assets/das.svg", link: "/mainpage" },
+  { label: "Appointments", icon: "src/assets/app.svg", link: "/appoiments" },
+  { label: "Patients", icon: "src/assets/pat.svg", link: "/patients" },
+  {
+    label: "Messages",
+    icon: "src/assets/mesb.svg",
+    active: true,
+    link: "/messages",
+  },
+  { label: "Report", icon: "src/assets/rep.svg", link: "/report" },
+  { label: "Settings", icon: "src/assets/set.svg", link: "/settings" },
+];
+
+const messageList = [
+  {
+    avatar: "https://placehold.co/40/add8e6/000",
+    name: "Ibrahim Kadri",
+    lastMessage: "See you next time Doctor. I have had a really great talk.",
+  },
+  {
+    avatar: "https://placehold.co/40/add8e6/000",
+    name: "Capri Sun",
+    lastMessage: "12pm Tue is that OK?",
+  },
+  {
+    avatar: "https://placehold.co/40/add8e6/000",
+    name: "Ibrahim Kadri",
+    lastMessage: "See you next time Doctor. I have had a really great talk.",
+  },
+  {
+    avatar: "https://placehold.co/40/add8e6/000",
+    name: "Capri Sun",
+    lastMessage: "12pm Tue is that OK?",
+  },
+  {
+    avatar: "https://placehold.co/40/add8e6/000",
+    name: "Ibrahim Kadri",
+    lastMessage: "See you next time Doctor. I have had a really great talk.",
+  },
+  {
+    avatar: "https://placehold.co/40/add8e6/000",
+    name: "Capri Sun",
+    lastMessage: "12pm Tue is that OK?",
+  },
+  {
+    avatar: "https://placehold.co/40/add8e6/000",
+    name: "Ibrahim Kadri",
+    lastMessage: "See you next time Doctor. I have had a really great talk.",
+  },
+  {
+    avatar: "https://placehold.co/40/add8e6/000",
+    name: "Capri Sun",
+    lastMessage: "12pm Tue is that OK?",
+  },
+  {
+    avatar: "https://placehold.co/40/add8e6/000",
+    name: "Ibrahim Kadri",
+    lastMessage: "See you next time Doctor. I have had a really great talk.",
+  },
+  {
+    avatar: "https://placehold.co/40/add8e6/000",
+    name: "Capri Sun",
+    lastMessage: "12pm Tue is that OK?",
+  },
+  {
+    avatar: "https://placehold.co/40/add8e6/000",
+    name: "Ibrahim Kadri",
+    lastMessage: "See you next time Doctor. I have had a really great talk.",
+  },
+  {
+    avatar: "https://placehold.co/40/add8e6/000",
+    name: "Capri Sun",
+    lastMessage: "12pm Tue is that OK?",
+  },
+];
+
+const currentMessage = {
+  user: {
+    name: "Ibrahim Kadri",
+    avatar: "https://placehold.co/10/add8e6/000",
+  },
+  contents: [
+    {
+      id: "1",
+      user: "1",
+      date: "6/10/2024",
+      time: "11:52",
+      content: "Hey Doctor, I am looking for an appointment with you.",
+    },
+    {
+      id: "2",
+      user: "2",
+      date: "6/10/2024",
+      time: "11:53",
+      content: "Sure! When are you available?",
+    },
+    {
+      id: "3",
+      user: "1",
+      date: "6/10/2024",
+      time: "11:54",
+      content: "Hey Doctor, I am looking for an appointment with you.",
+    },
+    {
+      id: "4",
+      user: "2",
+      date: "6/10/2024",
+      time: "11:56",
+      content: "Sure! When are you available?",
+    },
+    {
+      id: "5",
+      user: "1",
+      date: "6/10/2024",
+      time: "11:57",
+      content: "Hey Doctor, I am looking for an appointment with you.",
+    },
+    {
+      id: "6",
+      user: "2",
+      date: "6/10/2024",
+      time: "11:58",
+      content: "Sure! When are you available?",
+    },
+    {
+      id: "7",
+      user: "1",
+      date: "6/10/2024",
+      time: "11:59",
+      content: "Hey Doctor, I am looking for an appointment with you.",
+    },
+    {
+      id: "8",
+      user: "2",
+      date: "6/10/2024",
+      time: "12:00",
+      content: "Sure! When are you available?",
+    },
+    {
+      id: "9",
+      user: "1",
+      date: "6/10/2024",
+      time: "12:01",
+      content: "Hey Doctor, I am looking for an appointment with you.",
+    },
+    {
+      id: "10",
+      user: "2",
+      date: "6/10/2024",
+      time: "12:02",
+      content: "Sure! When are you available?",
+    },
+    {
+      id: "11",
+      user: "1",
+      date: "6/10/2024",
+      time: "12:01",
+      content: "Hey Doctor, I am looking for an appointment with you.",
+    },
+    {
+      id: "12",
+      user: "2",
+      date: "6/10/2024",
+      time: "12:02",
+      content: "Sure! When are you available?",
+    },
+  ],
+};
+
 const Messages = () => {
-  const item = [
-    { label: "Dashboard", icon: "src/assets/das.svg", link: "/mainpage" },
-    { label: "Appointments", icon: "src/assets/app.svg", link: "/appoiments" },
-    { label: "Patients", icon: "src/assets/pat.svg", link: "/patients" },
-    {
-      label: "Messages",
-      icon: "src/assets/mesb.svg",
-      active: true,
-      link: "/messages",
-    },
-    { label: "Report", icon: "src/assets/rep.svg", link: "/report" },
-    { label: "Settings", icon: "src/assets/set.svg", link: "/settings" },
-  ];
-
-  const messageList = [
-    {
-      avatar: "https://placehold.co/40/add8e6/000",
-      name: "Ibrahim Kadri",
-      lastMessage: "See you next time Doctor. I have had a really great talk.",
-    },
-    {
-      avatar: "https://placehold.co/40/add8e6/000",
-      name: "Capri Sun",
-      lastMessage: "12pm Tue is that OK?",
-    },
-    {
-      avatar: "https://placehold.co/40/add8e6/000",
-      name: "Ibrahim Kadri",
-      lastMessage: "See you next time Doctor. I have had a really great talk.",
-    },
-    {
-      avatar: "https://placehold.co/40/add8e6/000",
-      name: "Capri Sun",
-      lastMessage: "12pm Tue is that OK?",
-    },
-    {
-      avatar: "https://placehold.co/40/add8e6/000",
-      name: "Ibrahim Kadri",
-      lastMessage: "See you next time Doctor. I have had a really great talk.",
-    },
-    {
-      avatar: "https://placehold.co/40/add8e6/000",
-      name: "Capri Sun",
-      lastMessage: "12pm Tue is that OK?",
-    },
-    {
-      avatar: "https://placehold.co/40/add8e6/000",
-      name: "Ibrahim Kadri",
-      lastMessage: "See you next time Doctor. I have had a really great talk.",
-    },
-    {
-      avatar: "https://placehold.co/40/add8e6/000",
-      name: "Capri Sun",
-      lastMessage: "12pm Tue is that OK?",
-    },
-    {
-      avatar: "https://placehold.co/40/add8e6/000",
-      name: "Ibrahim Kadri",
-      lastMessage: "See you next time Doctor. I have had a really great talk.",
-    },
-    {
-      avatar: "https://placehold.co/40/add8e6/000",
-      name: "Capri Sun",
-      lastMessage: "12pm Tue is that OK?",
-    },
-    {
-      avatar: "https://placehold.co/40/add8e6/000",
-      name: "Ibrahim Kadri",
-      lastMessage: "See you next time Doctor. I have had a really great talk.",
-    },
-    {
-      avatar: "https://placehold.co/40/add8e6/000",
-      name: "Capri Sun",
-      lastMessage: "12pm Tue is that OK?",
-    },
-  ];
-
-  const currentMessage = {
-    user: {
-      name: "Ibrahim Kadri",
-      avatar: "https://placehold.co/10/add8e6/000",
-    },
-    contents: [
-      {
-        id: "1",
-        user: "1",
-        date: "6/10/2024",
-        time: "11:52",
-        content: "Hey Doctor, I am looking for an appointment with you.",
-      },
-      {
-        id: "2",
-        user: "2",
-        date: "6/10/2024",
-        time: "11:53",
-        content: "Sure! When are you available?",
-      },
-      {
-        id: "3",
-        user: "1",
-        date: "6/10/2024",
-        time: "11:54",
-        content: "Hey Doctor, I am looking for an appointment with you.",
-      },
-      {
-        id: "4",
-        user: "2",
-        date: "6/10/2024",
-        time: "11:56",
-        content: "Sure! When are you available?",
-      },
-      {
-        id: "5",
-        user: "1",
-        date: "6/10/2024",
-        time: "11:57",
-        content: "Hey Doctor, I am looking for an appointment with you.",
-      },
-      {
-        id: "6",
-        user: "2",
-        date: "6/10/2024",
-        time: "11:58",
-        content: "Sure! When are you available?",
-      },
-      {
-        id: "7",
-        user: "1",
-        date: "6/10/2024",
-        time: "11:59",
-        content: "Hey Doctor, I am looking for an appointment with you.",
-      },
-      {
-        id: "8",
-        user: "2",
-        date: "6/10/2024",
-        time: "12:00",
-        content: "Sure! When are you available?",
-      },
-      {
-        id: "9",
-        user: "1",
-        date: "6/10/2024",
-        time: "12:01",
-        content: "Hey Doctor, I am looking for an appointment with you.",
-      },
-      {
-        id: "10",
-        user: "2",
-        date: "6/10/2024",
-        time: "12:02",
-        content: "Sure! When are you available?",
-      },
-      {
-        id: "11",
-        user: "1",
-        date: "6/10/2024",
-        time: "12:01",
-        content: "Hey Doctor, I am looking for an appointment with you.",
-      },
-      {
-        id: "12",
-        user: "2",
-        date: "6/10/2024",
-        time: "12:02",
-        content: "Sure! When are you available?",
-      },
-    ],
-  };
-
   return (
     <div className="w-screen h-screen">
       {/* Header */}
