@@ -83,7 +83,7 @@ const messageList = [
 const currentMessage = {
   user: {
     name: "Ibrahim Kadri",
-    avatar: "https://placehold.co/10/add8e6/000",
+    avatar: "",
   },
   contents: [
     {

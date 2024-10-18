@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import Header from '../components/header';
 import Nav from '../components/Nav/nav';
 import InfoCard from '../custom/infocard';
@@ -168,9 +168,9 @@ const Mainpage = () => {
                                 <label className='p-5  font-inter font-bold text-xs'> Appoint Request</label>
                                 
                                 <div className="overflow-y-auto max-h-[350px] mt-3 ">
-                                    {requests.map((request) => (
-                                        <div className='flex justify-center'>
-                                            <div key={request.id} className="mt-3 flex items-center p-4 border rounded-md w-[90%]">
+                                    {requests.map((request)  => (
+                                        <div key={request.id} className='flex justify-center'>
+                                            <div  className="mt-3 flex items-center p-4 border rounded-md w-[90%]">
                                                 <div className="flex items-center">
                                                     <img
                                                         src={request.avatar}
