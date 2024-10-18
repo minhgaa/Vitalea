@@ -1,7 +1,7 @@
 const ClientHeader = () => {
   return (
-    <header className="w-full h-full">
-      <div className="w-full h-full flex items-center">
+    <header className="w-full">
+      <div className="flex items-center p-4">
         <label className="ml-7 mr-12 font-sofadi text-xl text-customBlue">
           Vitaléa
         </label>
