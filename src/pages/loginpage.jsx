@@ -1,7 +1,31 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import axiosInstance from '../config/api';
+import { useNavigate } from 'react-router-dom';
 const Login = () => {
-    const [isVisible, setIsVisible] = useState(true);
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const navigate = useNavigate()
+    const handleLogin = async (event) => {
+        event.preventDefault()
+        const response = await axiosInstance.post('/auth/login', {
+            email,
+            password
+        })
+        console.log(response.data)
+        if (response.data.account.role === "DOCTOR") {
+            response.data.account.doctor.role = response.data.account.role
+            response.data.account.doctor.image = response.data.account.image
+            localStorage.setItem('doctor', JSON.stringify(response.data.account.doctor))
+            navigate('/mainpage')
+        } else {
+            response.data.account.user.role = response.data.account.role
+            response.data.account.user.image = response.data.account.image
+            localStorage.setItem('user', JSON.stringify(response.data.account.user))
+            navigate('/')
+        }
+    }
+
     return (
         <div className="w-screen h-screen">
             {/* Header */}
@@ -51,18 +75,24 @@ const Login = () => {
                                         </label>
                                         <div className="absolute mt-1 h-[0.5px] w-full bg-gray-500" />
                                     </div>
-                                    <label className="font-poppin font-bold text-xs">Email</label>
-                                    <div className="mt-3 mb-5 h-[50px] flex justify-center items-center w-full rounded-lg bg-white border-[0.3px] border-gray-500"></div>
-                                    <label className="font-poppin font-bold text-xs">Password</label>
-                                    <div className="mt-3 h-[50px] flex justify-center items-center w-full rounded-lg bg-white border-[0.3px] border-gray-500"></div>
+                                    <form onSubmit={handleLogin}>
+                                        <label className="font-poppin font-bold text-xs">Email</label>
+                                        <div className="mt-3 mb-5 p-4 w-full rounded-lg bg-white border-[0.3px] border-gray-500">
+                                            <input className='outline-none border-none w-full' type='text' placeholder='Nhập email của bạn...' onChange={e => setEmail(e.target.value)} />
+                                        </div>
+                                        <label className="font-poppin font-bold text-xs">Password</label>
+                                        <div className="mt-3 mb-5 p-4 w-full rounded-lg bg-white border-[0.3px] border-gray-500">
+                                            <input className='outline-none border-none w-full' type='password' placeholder='Nhập mật khẩu của bạn...' onChange={e => setPassword(e.target.value)}/>
+                                        </div>
+                                        <div className="mt-5 flex justify-end h-10 w-full">
+                                            <button type='submit' className="h-10 w-10">
+                                                <img src="src/assets/nextbtn.svg" />
+                                            </button>
+                                        </div>
+                                    </form>
                                     <button className="font-poppin font-light text-xs">
                                         Forgot your password?
                                     </button>
-                                    <div className="mt-5 flex justify-end h-10 w-full">
-                                        <button className="h-10 w-10">
-                                            <img src="src/assets/nextbtn.svg" />
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
                         </div>

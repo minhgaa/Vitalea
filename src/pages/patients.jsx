@@ -14,13 +14,14 @@ const Patients = () => {
         { "id": "checkbox3", "label": "Another checkbox", "checked": false },
     ]
     const item = [
-        { label: 'Dashboard', icon: "src/assets/das.svg", link: "/mainpage" },
-        { label: 'Appointments', icon: "src/assets/app.svg", link: "/appoiments" },
-        { label: 'Patients', icon: "src/assets/patb.svg", active: true, link: "/patients" },
+        { label: 'Dashboard', icon: "src/assets/dasb.svg", link: "/mainpage" },
+        { label: 'Appointments', icon: "src/assets/app.svg", link: "/appointments" },
+        { label: 'Patients', icon: "src/assets/pat.svg", active:true, link: "/patients" },
+        { label: 'Blogs', icon: "src/assets/pat.svg", link: "/blogs" },
         { label: 'Messages', icon: "src/assets/mes.svg", link: "/messages" },
         { label: 'Report', icon: "src/assets/rep.svg", link: "/report" },
         { label: 'Settings', icon: "src/assets/set.svg", link: "/settings" },
-    ]
+    ];
     const sessionData = [
         {
           profile: 'https://via.placeholder.com/150',

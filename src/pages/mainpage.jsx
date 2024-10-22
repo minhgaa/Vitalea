@@ -1,11 +1,14 @@
-import  { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Header from '../components/header';
 import Nav from '../components/Nav/nav';
 import InfoCard from '../custom/infocard';
 import DayGrid from '../custom/daygrid';
 import CustomBarChart from '../custom/custombarchart'; // Import CustomBarChart
+import axiosInstance from '../config/api';
 
 const Mainpage = () => {
+    const [upcomingRequests, setUpcomingRequests] = useState([])
+    const [appointments, setAppointments] = useState([])
     const data = [
         { value: 17 },
         { value: 45 },
@@ -15,29 +18,27 @@ const Mainpage = () => {
         { value: 10 },
     ];
 
-    
-    const appointments = [
-        {
-            appointFor: 'Consultation',
-            name: 'John Doe',
-            dateTime: '2024-10-04 10:00 AM',
-        },
-        {
-            appointFor: 'Check-up',
-            name: 'Jane Smith',
-            dateTime: '2024-10-05 11:30 AM',
-        },
-        {
-            appointFor: 'Consultation',
-            name: 'John Doe',
-            dateTime: '2024-10-04 10:00 AM',
-        },
-        {
-            appointFor: 'Check-up',
-            name: 'Jane Smith',
-            dateTime: '2024-10-05 11:30 AM',
-        },
-    ];
+    const getUpcomingRequests = useCallback(async () => {
+        const response = await axiosInstance.post('/appointment/getappointments', {
+            "doctorId": 2,
+            "status": "Pending"
+        })
+        setUpcomingRequests(response.data)
+    }, [])
+
+    const getAppointments = useCallback(async () => {
+        const response = await axiosInstance.post('/appointment/getappointments', {
+            "doctorId": 2,
+            "status": "Approve"
+        })
+        console.log(response.data)
+        setAppointments(response.data)
+    }, [])
+
+    useEffect(() => {
+        getUpcomingRequests()
+        getAppointments()
+    }, [getUpcomingRequests, getAppointments])
 
     
     const [requests, setRequests] = useState([
@@ -69,6 +70,20 @@ const Mainpage = () => {
             dateTime: '2024-10-05 11:30 AM',
             counselling: 'Therapy Session',
         },
+        {
+            id: 2,
+            name: 'Jane Smith',
+            avatar: 'https://via.placeholder.com/50',
+            dateTime: '2024-10-05 11:30 AM',
+            counselling: 'Therapy Session',
+        },
+        {
+            id: 2,
+            name: 'Jane Smith',
+            avatar: 'https://via.placeholder.com/50',
+            dateTime: '2024-10-05 11:30 AM',
+            counselling: 'Therapy Session',
+        },
     ]);
 
     
@@ -84,8 +99,9 @@ const Mainpage = () => {
 
     const item = [
         { label: 'Dashboard', icon: "src/assets/dasb.svg", active: true, link: "/mainpage" },
-        { label: 'Appointments', icon: "src/assets/app.svg", link: "/appoiments" },
+        { label: 'Appointments', icon: "src/assets/app.svg", link: "/appointments" },
         { label: 'Patients', icon: "src/assets/pat.svg", link: "/patients" },
+        { label: 'Blogs', icon: "src/assets/pat.svg", link: "/blogs" },
         { label: 'Messages', icon: "src/assets/mes.svg", link: "/messages" },
         { label: 'Report', icon: "src/assets/rep.svg", link: "/report" },
         { label: 'Settings', icon: "src/assets/set.svg", link: "/settings" },
@@ -144,7 +160,6 @@ const Mainpage = () => {
                                         <table className="pl- min-w-[98.5%] min-h-full bg-white">
                                             <thead>
                                                 <tr className="text-xs">
-                                                    <th className="py-2 px-4 text-start">Appoint For</th>
                                                     <th className="py-2 px-4 text-start">Name</th>
                                                     <th className="py-2 px-4 text-start">Date & Time</th>
                                                 </tr>
@@ -152,9 +167,8 @@ const Mainpage = () => {
                                             <tbody>
                                                 {appointments.map((appointment, index) => (
                                                     <tr key={index} className="border-b h-14 text-xs hover:bg-gray-100 transition duration-200">
-                                                        <td className="py-2 px-4 text-start">{appointment.appointFor}</td>
-                                                        <td className="py-2 px-4 text-start">{appointment.name}</td>
-                                                        <td className="py-2 px-4 text-start">{appointment.dateTime}</td>
+                                                        <td className="py-2 px-4 text-start">{appointment?.user?.firstName} {appointment?.user?.lastName}</td>
+                                                        <td className="py-2 px-4 text-start">{appointment?.workingShift.time}, {appointment?.workingShift.date}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -168,19 +182,19 @@ const Mainpage = () => {
                                 <label className='p-5  font-inter font-bold text-xs'> Appoint Request</label>
                                 
                                 <div className="overflow-y-auto max-h-[350px] mt-3 ">
-                                    {requests.map((request)  => (
-                                        <div key={request.id} className='flex justify-center'>
-                                            <div  className="mt-3 flex items-center p-4 border rounded-md w-[90%]">
+                                    {upcomingRequests.map((request, index) => (
+                                        <div key={index} className='flex justify-center'>
+                                            <div className="mt-3 flex items-center p-4 border rounded-md w-[90%]">
                                                 <div className="flex items-center">
                                                     <img
-                                                        src={request.avatar}
-                                                        alt={request.name}
+                                                        src='https://via.placeholder.com/50'
+                                                        alt='user-avatar'
                                                         className="w-10 h-10 rounded-full mr-4"
                                                     />
                                                     <div className='w-[80%]'>
-                                                        <p className="font-semibold text-xs">{request.name}</p>
-                                                        <p className="text-xs text-gray-500">{request.dateTime}</p>
-                                                        <p className="text-xs text-gray-500">{request.counselling}</p>
+                                                        <p className="font-semibold text-xs">{request?.user.firstName} {request?.user?.lastName}</p>
+                                                        <p className="text-xs text-gray-500">{request?.workingShift.time}, {request?.workingShift.date}</p>
+                                                        <p className="text-xs text-gray-500">Counselling</p>
                                                         <div className='space-x-2 mt-3'>
                                                             <button
                                                                 className="bg-customBlue text-white w-[45%] h-[25px] rounded-md text-xs hover:bg-green-600"

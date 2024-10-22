@@ -1,3 +1,26 @@
 @tailwind base;
+@tailwind components;
 @layer base {
+}
+@layer components {
+    .line-clamp-3 {
+        @apply overflow-hidden;
+        display: -webkit-box;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+}
+
+.slick-arrow {
+    background-color: black !important;
+}
+.slick-slide > div {
+    margin: 0 10px;
+}
+li {
+    list-style-type: disc;
+    margin-left: 24px;
+}
+ol li {
+    list-style-type: decimal;
 }

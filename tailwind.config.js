@@ -17,10 +17,7 @@ export default {
       },
       screen: {
         'defaultsize': '900px'
-      },
-      gridTemplateColumns: {
-        'auto-fill-140': 'repeat(auto-fill, minmax(140px, 1fr))',
-      },
+      }
     },
   },
   plugins: [],
