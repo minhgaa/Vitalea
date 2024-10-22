@@ -6,13 +6,27 @@ import axiosInstance from "../config/api"
 const ManageDoctors = () => {
     const [open, setOpen] = useState(false)
     const [doctors, setDoctors] = useState([])
+    const [activeDoctor, setActiveDoctor] = useState({})
     const handleToggle = () => {
+        if (open === true) setActiveDoctor({})
         setOpen(prevState => !prevState)
     }
     const getDoctors = useCallback(async () => {
         const response = await axiosInstance.get('/doctor')
         setDoctors(response.data)
     }, [])
+
+    const handleDelete = async (id) => {
+        try {
+            const response = await axiosInstance.delete(`doctor/${id}`)
+            if (response.data) {
+                setDoctors(prevState => prevState.filter(item => item.id !== id))
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
 
     useEffect(() => {
         getDoctors()
@@ -48,22 +62,38 @@ const ManageDoctors = () => {
                                     <th className="py-2 px-4 text-start">Số điện thoại</th>
                                     <th className="py-2 px-4 text-start">Phòng khám</th>
                                     <th className="py-2 px-4 text-start">Số năm kinh nghiệm</th>
+                                    <th className="py-2 px-4 text-start">Chuyên khoa</th>
+                                    <th className="py-2 px-4 text-start"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="border-b h-14 text-xs hover:bg-gray-100 transition duration-200">
-                                    <td className="py-2 px-4 text-start">1</td>
-                                    <td className="py-2 px-4 text-start">2</td>
-                                    <td className="py-2 px-4 text-start">3</td>
-                                    <td className="py-2 px-4 text-start">4</td>
-                                    <td className="py-2 px-4 text-start">4</td>
-                                    <td className="py-2 px-4 text-start">4</td>
-                                </tr>
+                                {doctors.map((doctor,index) => {
+                                    return (
+                                        <tr key={index} className="border-b h-14 text-xs hover:bg-gray-100 transition duration-200">
+                                            <td className="py-2 px-4 text-start">{index + 1}</td>
+                                            <td className="py-2 px-4 text-start">{doctor?.firstName}</td>
+                                            <td className="py-2 px-4 text-start">{doctor?.lastName}</td>
+                                            <td className="py-2 px-4 text-start">{doctor?.phone}</td>
+                                            <td className="py-2 px-4 text-start">{doctor?.clinic}</td>
+                                            <td className="py-2 px-4 text-start">{doctor?.experience}</td>
+                                            <td className="py-2 px-4 text-start">{doctor?.specialization}</td>
+                                            <td className="py-2 px-4 text-start">
+                                                <button onClick={
+                                                    () => {
+                                                        handleToggle()
+                                                        setActiveDoctor(doctor)
+                                                    }
+                                                } className="hover:text-customBlue duration-150">Edit</button>
+                                                <button onClick={() => handleDelete(doctor?.id)} className="ml-4 hover:text-customBlue duration-150">Delete</button>
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
                             </tbody>
                         </table>
                     </div>
                 </div>
-                { open && <DoctorModal handleToggle={handleToggle}/> }
+                { open && <DoctorModal setDoctors={setDoctors} activeDoctor = {activeDoctor} handleToggle={handleToggle}/> }
             </div>
         </div>
     )

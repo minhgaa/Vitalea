@@ -1,7 +1,7 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios";
 // eslint-disable-next-line react/prop-types
-const DoctorModal = ({handleToggle}) => {
+const DoctorModal = ({activeDoctor = {}, handleToggle, setDoctors}) => {
     const [specialization, setSpecialization] = useState([])
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
@@ -21,28 +21,56 @@ const DoctorModal = ({handleToggle}) => {
     }
     const handleSubmit = async () => {
         try {
-            const data = new FormData()
-            data.append('file', file)
-            data.append('email', email)
-            data.append('phone', phone)
-            data.append('password', password)
-            data.append('firstName', firstName)
-            data.append('lastName', lastName)
-            data.append('introduction', introduction)
-            data.append('clinic', clinic)
-            data.append('experience', parseInt(exp))
-            data.append('specialization', specialization.join(', '))
-            const response = await axios({
-                method: 'POST',
-                url: 'http://localhost:3000/api/doctor',
-                data,
-                headers: {'Content-Type': 'multipart/form-data'}
-            })
-            console.log(response.data)
+            if (Object.keys(activeDoctor).length === 0){
+                const data = new FormData()
+                data.append('file', file)
+                data.append('email', email)
+                data.append('phone', phone)
+                data.append('password', password)
+                data.append('firstName', firstName)
+                data.append('lastName', lastName)
+                data.append('introduction', introduction)
+                data.append('clinic', clinic)
+                data.append('experience', parseInt(exp))
+                data.append('specialization', specialization.join(', '))
+                const response = await axios({
+                    method: 'POST',
+                    url: 'http://localhost:3000/api/doctor',
+                    data,
+                    headers: {'Content-Type': 'multipart/form-data'}
+                })
+                setDoctors(prevState => [...prevState, response.data.newDoctor])
+            } else {
+                const data = new FormData()
+                data.append('id', activeDoctor.id)
+                if (file) data.append('file', file)
+                data.append('phone', phone || activeDoctor.phone)
+                data.append('firstName', firstName || activeDoctor.firstName)
+                data.append('lastName', lastName || activeDoctor.lastName)
+                data.append('introduction', introduction || activeDoctor.introduction)
+                data.append('clinic', clinic || activeDoctor.clinic)
+                data.append('experience', parseInt(exp) || activeDoctor.experience)
+                data.append('specialization', specialization.join(', ') || activeDoctor.specialization)
+                const response = await axios({
+                    method: 'PATCH',
+                    url: 'http://localhost:3000/api/doctor',
+                    data,
+                    headers: {'Content-Type': 'multipart/form-data'}
+                })
+                setDoctors(prevState => {
+                    return prevState = prevState.map(item => (item.id === response.data.id ? response.data : item));
+                })
+            }
+            handleToggle()
         } catch (err){
             console.log(err)
         }
     }
+    useEffect(() => {
+        if (Object.keys(activeDoctor).length) {
+            setSpecialization(activeDoctor.specialization.split(','))
+        }
+    }, [activeDoctor])
     return (
             <div className="w-screen">
                 <div className="fixed top-0 left-0 h-screen w-screen bg-black opacity-70">
@@ -73,45 +101,45 @@ const DoctorModal = ({handleToggle}) => {
                         <div className="w-1/2 flex flex-col">
                             <label htmlFor="firstName">Tên</label>
                             <div className="mt-2 border border-[#B3B3B3] rounded-md p-4">
-                                <input id="firstName" type="text" className="w-full outline-none border-none" value={firstName} onChange={e => setFirstName(e.target.value)}/>
+                                <input id="firstName" type="text" className="w-full outline-none border-none" value={firstName || activeDoctor.firstName} onChange={e => setFirstName(e.target.value)}/>
                             </div>
                         </div>
                         <div className="ml-4 w-1/2 flex flex-col">
                             <label htmlFor="lastName">Họ</label>
                             <div className="mt-2 border border-[#B3B3B3] rounded-md p-4">
-                                <input id="lastName" type="text" className="w-full outline-none border-none" value = {lastName} onChange={e => setLastName(e.target.value)}/>
+                                <input id="lastName" type="text" className="w-full outline-none border-none" value = {lastName || activeDoctor.lastName} onChange={e => setLastName(e.target.value)}/>
                             </div>
                         </div>
                     </div>
                     <div className="mt-4 flex flex-col">
                         <label htmlFor="email">Email</label>
                         <div className="mt-2 border border-[#B3B3B3] rounded-md p-4">
-                            <input id="email" type="text" className="w-full outline-none border-none" value = {email} onChange={e => setEmail(e.target.value)}/>
+                            <input disabled = {Object.keys(activeDoctor).length > 0} id="email" type="text" className="w-full outline-none border-none" value = {email || activeDoctor.account?.email} onChange={e => setEmail(e.target.value)}/>
                         </div>
                     </div>
                     <div className="mt-4 flex flex-col">
                         <label htmlFor="password">Mật khẩu</label>
                         <div className="mt-2 border border-[#B3B3B3] rounded-md p-4">
-                            <input id="password" type="text" className="w-full outline-none border-none" value = {password} onChange={e => setPassword(e.target.value)}/>
+                            <input disabled = {Object.keys(activeDoctor).length > 0} id="password" type="text" className="w-full outline-none border-none" value = {password} onChange={e => setPassword(e.target.value)}/>
                         </div>
                     </div>
                     <div className="mt-4 flex flex-col">
                         <label htmlFor="clinic">Địa chỉ phòng khám</label>
                         <div className="mt-2 border border-[#B3B3B3] rounded-md p-4">
-                            <input id="clinic" type="text" className="w-full outline-none border-none" value = {clinic} onChange={e => setClinic(e.target.value)}/>
+                            <input id="clinic" type="text" className="w-full outline-none border-none" value = {clinic || activeDoctor.clinic} onChange={e => setClinic(e.target.value)}/>
                         </div>
                     </div>
                     <div className="flex">
                         <div className="w-1/2 flex flex-col">
                             <label htmlFor="phone">Số điện thoại</label>
                             <div className="mt-2 border border-[#B3B3B3] rounded-md p-4">
-                                <input id="phone" type="text" className="w-full outline-none border-none" value = {phone} onChange={e => setPhone(e.target.value)}/>
+                                <input id="phone" type="text" className="w-full outline-none border-none" value = {phone || activeDoctor.phone} onChange={e => setPhone(e.target.value)}/>
                             </div>
                         </div>
                         <div className="ml-4 w-1/2 flex flex-col">
                             <label htmlFor="experience">Số năm kinh nghiệm</label>
                             <div className="mt-2 border border-[#B3B3B3] rounded-md p-4">
-                                <input id="experience" type="text" className="w-full outline-none border-none" value = {exp} onChange={e => setExp(e.target.value)}/>
+                                <input id="experience" type="text" className="w-full outline-none border-none" value = {exp || activeDoctor.experience} onChange={e => setExp(e.target.value)}/>
                             </div>
                         </div>
                     </div>
@@ -119,39 +147,39 @@ const DoctorModal = ({handleToggle}) => {
                         <p>Chuyên khoa</p>
                         <div className="flex gap-4 mt-4 flex-wrap">
                             <div className="flex items-center mb-4">
-                                <input onChange={(e) => handleCheckbox(e)} id="nhi-khoa" type="checkbox" value="Nhi khoa" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                <input checked = {specialization.includes('Nhi khoa')} onChange={(e) => handleCheckbox(e)} id="nhi-khoa" type="checkbox" value="Nhi khoa" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                                 <label htmlFor="nhi-khoa" className="ms-2 text-sm font-medium text-black">Nhi khoa</label>
                             </div>
                             <div className="flex items-center mb-4">
-                                <input onChange={(e) => handleCheckbox(e)} id="san-phu-khoa" type="checkbox" value="Sản phụ khoa" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                <input checked = {specialization.includes('Sản phụ khoa')} onChange={(e) => handleCheckbox(e)} id="san-phu-khoa" type="checkbox" value="Sản phụ khoa" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                                 <label htmlFor="san-phu-khoa" className="ms-2 text-sm font-medium text-black">Sản phụ khoa</label>
                             </div>
                             <div className="flex items-center mb-4">
-                                <input onChange={(e) => handleCheckbox(e)} id="da-lieu" type="checkbox" value="Da liễu" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                <input checked = {specialization.includes('Da liễu')} onChange={(e) => handleCheckbox(e)} id="da-lieu" type="checkbox" value="Da liễu" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                                 <label htmlFor="da-lieu" className="ms-2 text-sm font-medium text-black">Da liễu</label>
                             </div>
                             <div className="flex items-center mb-4">
-                                <input onChange={(e) => handleCheckbox(e)} id="tieu-hoa" type="checkbox" value="Tiêu hoá" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                <input checked = {specialization.includes('Tiêu hóa')} onChange={(e) => handleCheckbox(e)} id="tieu-hoa" type="checkbox" value="Tiêu hoá" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                                 <label htmlFor="tieu-hoa" className="ms-2 text-sm font-medium text-black">Tiêu hoá</label>
                             </div>
                             <div className="flex items-center mb-4">
-                                <input onChange={(e) => handleCheckbox(e)} id="co-xuong-khop" type="checkbox" value="Cơ xương khớp" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                <input checked = {specialization.includes('Cơ xương khớp')} onChange={(e) => handleCheckbox(e)} id="co-xuong-khop" type="checkbox" value="Cơ xương khớp" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                                 <label htmlFor="co-xuong-khop" className="ms-2 text-sm font-medium text-black">Cơ xương khớp</label>
                             </div>
                             <div className="flex items-center mb-4">
-                                <input onChange={(e) => handleCheckbox(e)} id="di-ung" type="checkbox" value="Dị ứng - miễn dịch" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                <input checked = {specialization.includes('Dị ứng - miễn dịch')} onChange={(e) => handleCheckbox(e)} id="di-ung" type="checkbox" value="Dị ứng - miễn dịch" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                                 <label htmlFor="di-ung" className="ms-2 text-sm font-medium text-black">Dị ứng - miễn dịch</label>
                             </div>
                             <div className="flex items-center mb-4">
-                                <input onChange={(e) => handleCheckbox(e)} id="gay-me" type="checkbox" value="Gây mê hồi sức" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                <input checked = {specialization.includes('Gây mê hồi sức')} onChange={(e) => handleCheckbox(e)} id="gay-me" type="checkbox" value="Gây mê hồi sức" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                                 <label htmlFor="gay-me" className="ms-2 text-sm font-medium text-black">Gây mê hồi sức</label>
                             </div>
                             <div className="flex items-center mb-4">
-                                <input onChange={(e) => handleCheckbox(e)} id="tai-mui-hong" type="checkbox" value="Tai - mũi - họng" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                <input checked = {specialization.includes('Tai - mũi - họng')} onChange={(e) => handleCheckbox(e)} id="tai-mui-hong" type="checkbox" value="Tai - mũi - họng" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                                 <label htmlFor="tai-mui-hong" className="ms-2 text-sm font-medium text-black">Tai - mũi - họng</label>
                             </div>
                             <div className="flex items-center mb-4">
-                                <input onChange={(e) => handleCheckbox(e)} id="noi-tong-quat" type="checkbox" value="Nội tổng quát" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                <input checked = {specialization.includes('Nội tổng quát')} onChange={(e) => handleCheckbox(e)} id="noi-tong-quat" type="checkbox" value="Nội tổng quát" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                                 <label htmlFor="noi-tong-quat" className="ms-2 text-sm font-medium text-black">Nội tổng quát</label>
                             </div>
                         </div>
