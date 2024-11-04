@@ -1,7 +1,3 @@
-import { Button } from "@headlessui/react"
-import { FaArrowCircleRight } from "react-icons/fa"
-import { Link } from "react-router-dom"
-
 const Doctors = () => {
     return (
         <div className="">

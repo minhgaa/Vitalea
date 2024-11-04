@@ -8,7 +8,7 @@ const Messages = () => {
         { label: 'Patients', icon: "src/assets/pat.svg", link: "/patients" },
         { label: 'Blogs', icon: "src/assets/pat.svg", link: "/blogs" },
         { label: 'Messages', icon: "src/assets/mes.svg", active:true, link: "/messages" },
-        { label: 'Report', icon: "src/assets/rep.svg", link: "/report" },
+        { label: 'Working Schedule', icon: "src/assets/rep.svg", link: "/working-schedule" },
         { label: 'Settings', icon: "src/assets/set.svg", link: "/settings" },
     ];
 

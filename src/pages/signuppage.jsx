@@ -1,15 +1,39 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from "react-router-dom"
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Link, useNavigate } from "react-router-dom"
+import axiosInstance from '../config/api';
 const Signup = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
-
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [gender, setGender] = useState('')
+    const [address, setAddress] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
+    const navigate = useNavigate()
     const openPopup = () => {
         setIsPopupOpen(true);
     };
     const closePopup = () => {
-        setIsPopupOpen(flase);
+        setIsPopupOpen(false);
     };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        const data = {
+            firstName,
+            lastName,
+            address,
+            phoneNumber,
+            gender,
+            email,
+            password
+        }
+        const response = await axiosInstance.post('/auth/register', data)
+        if(response.data)  navigate('/login') 
+    }
+
     return (
         <div className="w-screen h-screen">
             {/* Header */}
@@ -77,15 +101,15 @@ const Signup = () => {
                     </motion.div>
                 </div>)}
                 {isPopupOpen && (
-                    <div className="flex justify-center items-center ">
+                    <div className="h-full flex justify-center items-center ">
                         <motion.div
-                            className="h-5/6 w-3/4 bg-white shadow-2xl rounded-lg flex items-center justify-center"
+                            className="overflow-y-scroll w-3/4 bg-white shadow-2xl rounded-lg flex items-center justify-center"
                             initial={{ opacity: 0, x: -100 }}   // Bắt đầu từ bên trái và mờ dần
                             animate={{ opacity: 1, x: 0 }}      // Hiện dần và trượt vào
                             transition={{ duration: 0.8 }}      // Thời gian chuyển động
                         >
-                            <div className="h-[80%] w-full">
-                                <div className="h-[90%] w-full flex justify-center items-center">
+                            <div className="w-full">
+                                <div className=" w-full flex justify-center items-center">
                                     <div className=" h-auto w-[70%]">
                                         <div className=" h-full w-[70%] mb-5  flex justify-start items-end ">
                                             <button onClick={closePopup} className='mr-2 h-8 w-8 flex justify-center items-center'>
@@ -95,24 +119,45 @@ const Signup = () => {
                                                 Sign up
                                             </label>
                                         </div>
-                                        <div className='grid grid-cols-1 max-w-md'>
+                                        <form onSubmit={handleSubmit} className='grid grid-cols-1 max-w-md'>
                                             <div className='flex justify-between gap-6 w-full'>
                                                 <div className='flex flex-col w-full'>
-                                                    <label className="font-poppin font-bold text-xs">Name</label>
-                                                    <input className="mt-3  mb-5 h-[50px] w-full rounded-lg bg-white border-[0.3px] border-gray-500" />
+                                                    <label className="font-poppin font-bold text-xs">First name</label>
+                                                    <input className="mt-3  mb-5 h-[50px] w-full rounded-lg bg-white border-[0.3px] border-gray-500" value={firstName} onChange = {e => setFirstName(e.target.value)} />
                                                 </div>
                                                 <div className='flex flex-col w-full'>
-                                                    <label className="font-poppin font-bold text-xs">Username</label>
-                                                    <input className="mt-3 h-[50px] w-full rounded-lg bg-white border-[0.3px] border-gray-500" />
+                                                    <label className="font-poppin font-bold text-xs">Last name</label>
+                                                    <input className="mt-3 h-[50px] w-full rounded-lg bg-white border-[0.3px] border-gray-500" value={lastName} onChange = {e => setLastName(e.target.value)} />
                                                 </div>
                                             </div>
                                             <div className='col-span-2'>
                                                 <label className="font-poppin font-bold text-xs">Email</label>
-                                                <input className="mt-3 h-[50px] flex justify-center items-center w-full rounded-lg bg-white border-[0.3px] border-gray-500"></input>
+                                                <input className="mt-3 h-[50px] flex justify-center items-center w-full rounded-lg bg-white border-[0.3px] border-gray-500" value={email} onChange = {e => setEmail(e.target.value)}/>
                                             </div>
                                             <div className='col-span-2 mt-4'>
                                                 <label className="font-poppin font-bold text-xs">Password</label>
-                                                <input className="mt-3 h-[50px] flex justify-center items-center w-full rounded-lg bg-white border-[0.3px] border-gray-500"></input>
+                                                <input className="mt-3 h-[50px] flex justify-center items-center w-full rounded-lg bg-white border-[0.3px] border-gray-500" value={password} onChange = {e => setPassword(e.target.value)}/>
+                                            </div>
+                                            <div className=''>
+                                                <label className="font-poppin font-bold text-xs mr-4">Gender</label>
+                                                <div className='flex'>
+                                                    <div className='col-span-2 mt-4 flex items-center'>
+                                                        <input type='radio' value='nam' name = 'gender' onChange = {e => setGender(e.target.value)} />
+                                                        <label className="font-poppin font-bold text-xs mr-4">Nam</label>
+                                                    </div>
+                                                    <div className='col-span-2 mt-4 flex items-center'>
+                                                        <input type='radio' value='nữ' name = 'gender' onChange = {e => setGender(e.target.value)} />
+                                                        <label className="font-poppin font-bold text-xs mr-4">Nữ</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className='col-span-2 mt-4'>
+                                                <label className="font-poppin font-bold text-xs">Address</label>
+                                                <input className="mt-3 h-[50px] flex justify-center items-center w-full rounded-lg bg-white border-[0.3px] border-gray-500" value={address} onChange = {e => setAddress(e.target.value)}/>
+                                            </div>
+                                            <div className='col-span-2 mt-4'>
+                                                <label className="font-poppin font-bold text-xs">Phone Number</label>
+                                                <input className="mt-3 h-[50px] flex justify-center items-center w-full rounded-lg bg-white border-[0.3px] border-gray-500" value={phoneNumber} onChange = {e => setPhoneNumber(e.target.value)}/>
                                             </div>
                                             <div className='col-span-2 text-xs font-poppin flex justify-center items-center w-full h-20'>
                                                 <label>Already have an account? </label>
@@ -125,7 +170,7 @@ const Signup = () => {
                                                     <img src="src/assets/nextbtn.svg" />
                                                 </button>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

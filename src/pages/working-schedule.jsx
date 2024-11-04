@@ -13,8 +13,8 @@ const WorkingSchedule = () => {
         { label: 'Dashboard', icon: "src/assets/das.svg", link: "/mainpage" },
         { label: 'Appointments', icon: "src/assets/app.svg", link: "/appoiments" },
         { label: 'Patients', icon: "src/assets/pat.svg", link: "/patients" },
+        { label: 'Blogs', icon: "src/assets/pat.svg", link: "/blogs" },
         { label: 'Messages', icon: "src/assets/mes.svg", link: "/messages" },
-        { label: 'Report', icon: "src/assets/rep.svg", link: "/report" },
         { label: 'Working Schedule', icon: "src/assets/repb.svg", active: true, link: "/working-schedule" },
         { label: 'Settings', icon: "src/assets/set.svg", link: "/settings" },
     ]
@@ -68,7 +68,7 @@ const WorkingSchedule = () => {
             return output
     }
     const getSchedule = useCallback(async () => {
-        const response = await axiosInstance.get('/working-schedule/2')
+        const response = await axiosInstance.get('/working-schedule/4')
         setSchedule(response.data)
     }, [])
     useEffect(() => {

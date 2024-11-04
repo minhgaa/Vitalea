@@ -67,7 +67,6 @@ const Appoiments = () => {
         { label: 'Appointments', icon: "src/assets/appb.svg", active: true, link: "/appoiments" },
         { label: 'Patients', icon: "src/assets/pat.svg", link: "/patients" },
         { label: 'Messages', icon: "src/assets/mes.svg", link: "/messages" },
-        { label: 'Report', icon: "src/assets/rep.svg", link: "/report" },
         { label: 'Settings', icon: "src/assets/set.svg", link: "/settings" },
     ]
     const [requests, setRequests] = useState([

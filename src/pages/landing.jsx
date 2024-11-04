@@ -1,18 +1,25 @@
 import { Button } from "@headlessui/react";
 // import { useState } from "react";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FaArrowCircleRight } from "react-icons/fa";
 import Header from "../components/header";
+import { useState } from "react";
 const Landing = () => {
+    const navigate = useNavigate()
+    const [symptom, setSymptom] = useState('')
     const settings = {
         dots: true,
         speed: 500,
         slidesToShow: 4,
         infinite: false,
         slidesToScroll: 1
+    }
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        navigate(`/doctors/search/?q=${symptom}`)
     }
     return (
         <div className="w-screen">
@@ -26,9 +33,9 @@ const Landing = () => {
                         <label className=" flex mt-5 font-roboto font-bold text-xl text-[#084D7C]">
                             Securely share your comprehensive medical history with doctors and loved ones, for better communication and care
                         </label>
-                        <div className="mt-4 p-4 border border-[#B3B3B3] rounded-md">
-                            <input className="w-full outline-none border-none" type="text" placeholder="Nhập vào triệu chứng của bạn..." />
-                        </div>
+                        <form onSubmit={handleSubmit} className="mt-4 p-4 border border-[#B3B3B3] rounded-md">
+                            <input onChange={e => setSymptom(e.target.value)} className="w-full outline-none border-none" type="text" placeholder="Nhập vào triệu chứng của bạn..." />
+                        </form>
                     </div>
                 </div>
                 <div className=" flex justify-center items-end ">

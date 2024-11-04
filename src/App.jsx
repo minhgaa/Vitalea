@@ -27,6 +27,7 @@ import UserMessages from './pages/user-messages'
 import Blogs from './pages/blogs'
 import DoctorSearch from './pages/doctor-search'
 import ManageDoctors from './pages/admin-doctors'
+import VideoChat from './pages/video-chat'
 function App() {
   return (
     <UserContextProvider>
@@ -57,6 +58,7 @@ function App() {
         <Route path='/blogs' element={<Blogs/>} />
         <Route path='/doctors/search' element={<DoctorSearch/>} />
         <Route path='/admin/doctors' element={<ManageDoctors/>} />
+        <Route path='/video-chat' element={<VideoChat/>} />
       </Routes>
     </UserContextProvider>
   )
