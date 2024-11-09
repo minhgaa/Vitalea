@@ -1,4 +1,5 @@
-import { Route, Routes } from 'react-router-dom'
+/* eslint-disable react/prop-types */
+import { Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
 import Landing from './pages/landing'
 import Login from './pages/loginpage'
@@ -28,14 +29,31 @@ import Blogs from './pages/blogs'
 import DoctorSearch from './pages/doctor-search'
 import ManageDoctors from './pages/admin-doctors'
 import VideoChat from './pages/video-chat'
+import { useAuthContext } from './context/AuthContext'
 function App() {
+  const {authUser} = useAuthContext()
+  console.log(authUser)
   return (
     <UserContextProvider>
       <Routes>
-        <Route path='/' element={<Landing />} />
-        <Route path='/login' element={<Login />} />
+        <Route path='/' element={
+          <Landing/>
+        } />
+        <Route path='/login' element={
+          !authUser ? (
+            <Login />
+          ) : authUser.role === 'USER' ? (
+            <Navigate to='/' />
+          ) : (
+            <Navigate to='/mainpage' />
+          )
+        } />
         <Route path='/signup' element={<Signup />} />
-        <Route path='/mainpage' element={<Mainpage />} />
+        <Route path='/mainpage' element={
+          <DoctorRoute user={authUser}>
+              <Mainpage/>
+          </DoctorRoute>
+        } />
         <Route path='/appointments' element={<Appointments />} />
         <Route path='/patients' element={<Patients />} />
         <Route path='/messages' element={<Messages />} />
@@ -43,7 +61,11 @@ function App() {
         <Route path='/settings' element={<Settings />} />
         <Route path='/personal' element={<Personal />} />
         <Route path='/doctor-profile/:id' element={<DoctorProfile />} />
-        <Route path='/appointment/:id' element={<Appointment />} />
+        <Route path='/appointment/:id' element={
+          <ProtectedRoute user = {authUser}>
+            <Appointment />
+          </ProtectedRoute>
+        } />
         <Route path='/news' element={<News />} />
         <Route path='/news-search' element={<NewsSearch/>} />
         <Route path='/doctors' element={<Doctors/>} />
@@ -64,4 +86,17 @@ function App() {
   )
 }
 
+const ProtectedRoute = ({user, children}) => {
+  if (!user){
+    return <Navigate to='/login'/>
+  }
+  return children
+} 
+const DoctorRoute = ({user, children}) => {
+  if (!user){
+    return <Navigate to='/login'/>
+  }
+  if (user.role === 'DOCTOR') return children
+  return <Navigate to ='/'/>
+} 
 export default App

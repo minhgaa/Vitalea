@@ -4,14 +4,20 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 import axiosInstance from "../config/api";
 import axios from "axios";
+import { useParams } from "react-router-dom";
+import { useAuthContext } from "../context/AuthContext";
+
 const Appointment = () => {
+    const {id} = useParams()
     const fileRef = useRef(null)
     const [imgs, setImgs] = useState([])
     const [schedule, setSchedule] = useState([])
+    const [doctor, setDoctor] = useState([])
     const currentDate = new Date();
     const daysInWeek = [];
     const dayOfWeek = currentDate.getDay();
     const offset = (dayOfWeek === 0) ? -6 : 1 - dayOfWeek; 
+    const {authUser} = useAuthContext()
 
     for (let i = 0; i < 6; i++) {
     const date = new Date(currentDate);
@@ -25,13 +31,20 @@ const Appointment = () => {
     }
 
     const getSchedule = useCallback(async (day) => {
-        const response = await axiosInstance.get(`/working-schedule/2/${day}`)
+        const response = await axiosInstance.get(`/working-schedule/${id}/${day}`)
         setSchedule(response.data)
-    }, [])
+    }, [id])
+
+    const getDoctor = useCallback(async () => {
+        const response = await axiosInstance.get(`/doctor/${id}`)
+        setDoctor(response.data)
+        console.log(response.data)
+    }, [id])
 
     useEffect(() => {
         getSchedule('Thứ Hai')
-    }, [getSchedule])  
+        getDoctor()
+    }, [getSchedule, getDoctor])  
 
     const handleDayClicked = (day, index) => {
         setActive({[index] : format(new Date(day.date), "dd/MM/yyyy")})
@@ -54,8 +67,8 @@ const Appointment = () => {
         data.append('status', 'Pending')
         data.append('type', 'Online')
         data.append('note', 123)
-        data.append('doctorId', 2)
-        data.append('userId', 1)
+        data.append('doctorId', id)
+        data.append('userId', authUser.id)
         const response = await axios({
             method: 'POST',
             url: 'http://localhost:3000/api/appointment',
@@ -65,7 +78,7 @@ const Appointment = () => {
         console.log(response)
     }
     return (
-        <div className="bg-[#F1F5F9]">
+        <div className="bg-[#F1F5F9] h-screen">
             <div className="w-[1200px] mx-auto flex">
                 <div className="w-1/2">
                     <div className="bg-white rounded-md p-6 w-full">
@@ -130,15 +143,15 @@ const Appointment = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-white border-md p-6 ml-12 h-fit ">
+                <div className="bg-white border-md p-6 ml-12 h-fit w-[600px] ">
                     <p className="text-[18px] font-bold text-customBlue">3. Thông tin đặt khám</p>
                     <div className="py-4 mt-6 border-t border-b flex items-center">
-                        <div className="w-[100px] h-[100px] rounded-full">
-                            <img src="../../public/pictures_healthcare/doctor1.png"/>
+                        <div className="w-[75px] h-[75px] rounded-full overflow-hidden">
+                            <img className="w-full h-full object-cover" src={`http://localhost:3000/${doctor?.account?.image}`}/>
                         </div>
                         <div className="ml-2">
-                            <p className="text-[14px] font-bold">BS. CKII Nguyễn Văn A</p>
-                            <p className="text-[14px]">Địa chỉ phòng mạch: 53 Phạm Hữu Chí, Phường 12, Quận 5, Hồ Chí Minh</p>
+                            <p className="text-[14px] font-bold">BS. {doctor.firstName} {doctor.lastName}</p>
+                            <p className="text-[14px]">Địa chỉ phòng mạch: {doctor.clinic}</p>
                         </div>
                     </div>
                     <div className="mt-6">
@@ -152,7 +165,7 @@ const Appointment = () => {
                         </div>
                         <div className="flex justify-between">
                             <p>Bệnh nhân:</p>
-                            <p>Nguyễn Văn B</p>
+                            <p>{authUser.firstName} {authUser.lastName}</p>
                         </div>
                     </div>
                     <form onSubmit={e => handleSubmit(e)} className="mt-6 p-2 bg-customBlue text-center rounded-md text-white font-bold text-[18px] cursor-pointer"><button className="w-full" type="submit">Xác nhận</button></form>

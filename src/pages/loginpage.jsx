@@ -2,49 +2,37 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import axiosInstance from '../config/api';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../custom/spinner';
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
     const handleLogin = async (event) => {
         event.preventDefault()
+        setLoading(true)
         const response = await axiosInstance.post('/auth/login', {
             email,
             password
         })
-        console.log(response.data)
         if (response.data.account.role === "DOCTOR") {
             response.data.account.doctor.role = response.data.account.role
             response.data.account.doctor.image = response.data.account.image
             localStorage.setItem('doctor', JSON.stringify(response.data.account.doctor))
             navigate('/mainpage')
-        } else {
+        } else if (response.data.account.role === "USER") {
             response.data.account.user.role = response.data.account.role
             response.data.account.user.image = response.data.account.image
             localStorage.setItem('user', JSON.stringify(response.data.account.user))
             navigate('/')
-        }
+        } else navigate('/admin/doctors')
     }
 
     return (
-        <div className="w-screen h-screen">
-            {/* Header */}
-            <div className=" h-[7.5%] w-screen flex items-center justify-between">
-                <label className="pl-7 font-sofadi text-xl text-customBlue">
-                    Vitaléa
-                </label>
-                <div className="flex items-center pr-7">
-                    <button>
-                        <img src="src/assets/notiIcon.svg" className="w-7 h-7 mr-3" />
-                    </button>
-                    <button className="flex items-center justify-center  w-7 h-7 rounded-full border border-gray-400">
-                        <img src="src/assets/avatar.png" className="w-4 h-4" />
-                    </button>
-                </div>
-            </div>
+        <div className="w-screen h-screen overflow-hidden">
 
             {/* Main Grid */}
-            <div className="grid grid-cols-2 h-[90%]">
+            {loading && <Spinner/> || <div className="grid grid-cols-2 h-[90%]">
                 <div className="flex justify-center items-center ">
                     <motion.div
                         className="h-5/6 w-3/4 bg-white shadow-2xl rounded-lg flex items-center justify-center"
@@ -106,7 +94,7 @@ const Login = () => {
                         className="ml-7 absolute w-1/3 h-5/6 z-10" />
                     <div className=" absolute w-1/3 h-[30%] bg-customBlue rounded-xl z-0" />
                 </div>
-            </div>
+            </div>}
         </div>
     )
 }

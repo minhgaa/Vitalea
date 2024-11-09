@@ -32,12 +32,7 @@ const ManageDoctors = () => {
         getDoctors()
     }, [getDoctors])
     const item = [
-        { label: 'Lịch khám', icon: "../src/assets/app.svg", link: "/user/order" },
-        { label: 'Lịch sử thanh toán', icon: "../src/assets/app.svg", link: "/user/profile" },
-        { label: 'Hồ sơ', icon: "../src/assets/app.svg", link: "/user/profile" },
-        { label: 'Tin nhắn', icon: "../src/assets/app.svg", link: "/user/messages" },
-        { label: 'Tài khoản', icon: "../src/assets/app.svg", active: true, link: "/user/settings" },
-        { label: 'Đăng xuất', icon: "../src/assets/app.svg", link: "/mainpage" },
+        { label: 'Quản lí bác sĩ', icon: "../src/assets/app.svg", active: true,  link: "/admin/doctors" },
     ]
     return (
 

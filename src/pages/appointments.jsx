@@ -4,18 +4,19 @@ import Dropdownmenu from '../custom/dropdownmenu';
 import CounselingCard from '../custom/counsellingcart';
 import { useCallback, useEffect, useState } from 'react';
 import axiosInstance from '../config/api';
+import { useAuthContext } from '../context/AuthContext';
 
 const Appoiments = () => {
-
+    const {authUser} = useAuthContext()
     const [appointments, setAppointments] = useState([])
 
     const getAppointments = useCallback(async () => {
         const response = await axiosInstance.post('/appointment/getappointments', {
-            "doctorId": 2,
+            "doctorId": authUser.id,
             "status": "Approve"
         })
         setAppointments(response.data)
-    }, [])
+    }, [authUser.id])
 
     useEffect(() => {
         getAppointments()

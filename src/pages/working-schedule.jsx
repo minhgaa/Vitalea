@@ -8,7 +8,9 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useCallback, useEffect, useState } from "react";
 import axiosInstance from "../config/api";
+import { useAuthContext } from "../context/AuthContext";
 const WorkingSchedule = () => {
+    const {authUser} = useAuthContext()
     const item = [
         { label: 'Dashboard', icon: "src/assets/das.svg", link: "/mainpage" },
         { label: 'Appointments', icon: "src/assets/app.svg", link: "/appoiments" },
@@ -42,7 +44,7 @@ const WorkingSchedule = () => {
                 to: Object.values(to)[i]
             })
         }
-        const response = await axiosInstance.patch('/working-schedule/2', connectDay(dayChanged))
+        const response = await axiosInstance.patch(`/working-schedule/${authUser.id}`, connectDay(dayChanged))
 
         console.log(response)
     }
@@ -68,9 +70,9 @@ const WorkingSchedule = () => {
             return output
     }
     const getSchedule = useCallback(async () => {
-        const response = await axiosInstance.get('/working-schedule/4')
+        const response = await axiosInstance.get(`/working-schedule/${authUser.id}`)
         setSchedule(response.data)
-    }, [])
+    }, [authUser.id])
     useEffect(() => {
         getSchedule()
     }, [getSchedule])

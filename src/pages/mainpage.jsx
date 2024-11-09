@@ -5,8 +5,10 @@ import InfoCard from '../custom/infocard';
 import DayGrid from '../custom/daygrid';
 import CustomBarChart from '../custom/custombarchart'; // Import CustomBarChart
 import axiosInstance from '../config/api';
+import { useAuthContext } from '../context/AuthContext';
 
 const Mainpage = () => {
+    const {authUser} = useAuthContext()
     const [upcomingRequests, setUpcomingRequests] = useState([])
     const [appointments, setAppointments] = useState([])
     const data = [
@@ -20,20 +22,20 @@ const Mainpage = () => {
 
     const getUpcomingRequests = useCallback(async () => {
         const response = await axiosInstance.post('/appointment/getappointments', {
-            "doctorId": 2,
+            "doctorId": authUser.id,
             "status": "Pending"
         })
         setUpcomingRequests(response.data)
-    }, [])
+    }, [authUser.id])
 
     const getAppointments = useCallback(async () => {
         const response = await axiosInstance.post('/appointment/getappointments', {
-            "doctorId": 2,
+            "doctorId": authUser.id,
             "status": "Approve"
         })
         console.log(response.data)
         setAppointments(response.data)
-    }, [])
+    }, [authUser.id])
 
     useEffect(() => {
         getUpcomingRequests()
@@ -186,12 +188,13 @@ const Mainpage = () => {
                                         <div key={index} className='flex justify-center'>
                                             <div className="mt-3 flex items-center p-4 border rounded-md w-[90%]">
                                                 <div className="flex items-center">
-                                                    <img
-                                                        src='https://via.placeholder.com/50'
+                                                    <div className='w-10 h-10 rounded-full overflow-hidden'>
+                                                        <img
+                                                        src={`http://localhost:3000/${request?.user?.account?.image}`}
                                                         alt='user-avatar'
-                                                        className="w-10 h-10 rounded-full mr-4"
-                                                    />
-                                                    <div className='w-[80%]'>
+                                                        />
+                                                    </div>
+                                                    <div className='w-[80%] pl-4'>
                                                         <p className="font-semibold text-xs">{request?.user.firstName} {request?.user?.lastName}</p>
                                                         <p className="text-xs text-gray-500">{request?.workingShift.time}, {request?.workingShift.date}</p>
                                                         <p className="text-xs text-gray-500">Counselling</p>

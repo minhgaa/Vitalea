@@ -10,17 +10,15 @@
         -webkit-box-orient: vertical;
     }
 }
-
-.slick-arrow {
-    background-color: black !important;
+html, body {
+    overflow-x: hidden;
 }
 .slick-slide > div {
     margin: 0 10px;
 }
-li {
-    list-style-type: disc;
-    margin-left: 24px;
-}
-ol li {
-    list-style-type: decimal;
+
+ul.list_hover:hover > div {
+    visibility: visible;
+    opacity: 100;
+    color: black;
 }
