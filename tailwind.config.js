@@ -9,11 +9,13 @@ export default {
       fontFamily : {
         sofadi: ['Sofadi One'],
         inter: ['Inter'],
-        poppin: ['Poppins']
+        poppin: ['Poppins'],
+        cabin: ['Cabin'],
       },
       colors: {
         customBlue: '#0873BB', 
         customBg: '#F7F9FB',
+        customBlue1: '#4580A7',
       },
       screen: {
         'defaultsize': '900px'
