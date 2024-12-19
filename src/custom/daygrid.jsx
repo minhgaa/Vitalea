@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import Dropdownmenu from './dropdownmenu';
 
 const DayGrid = () => {
     const [startDate, setStartDate] = useState(new Date());
@@ -32,7 +33,10 @@ const DayGrid = () => {
         if (window.innerWidth < 1300) return 14;
         return 18; 
     };
-
+     const months = [
+        "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+        "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+        ];
    
     useEffect(() => {
         const handleResize = () => {
@@ -47,7 +51,7 @@ const DayGrid = () => {
     }, []);
 
     return (
-        <div className="flex items-center justify-start pt-3 pl-4">
+        <div className="flex justify-start pt-3 pl-4">
             <div className="flex justify-center mb-4">
                 {dayArray.map((day, index) => (
                     <div 
@@ -65,6 +69,9 @@ const DayGrid = () => {
                 className="ml-2 mb-4">
                 <img src="src/assets/next.svg" className='h-5 w-5' />
             </button>
+            <div className='ml-3'>
+                <Dropdownmenu data={months} />
+            </div>
         </div>
     );
 };

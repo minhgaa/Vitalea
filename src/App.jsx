@@ -30,6 +30,7 @@ import DoctorSearch from './pages/doctor-search'
 import ManageDoctors from './pages/admin-doctors'
 import VideoChat from './pages/video-chat'
 import { useAuthContext } from './context/AuthContext'
+import Verification from './pages/verification'
 function App() {
   const {authUser} = useAuthContext()
   console.log(authUser)
@@ -81,6 +82,7 @@ function App() {
         <Route path='/doctors/search' element={<DoctorSearch/>} />
         <Route path='/admin/doctors' element={<ManageDoctors/>} />
         <Route path='/video-chat' element={<VideoChat/>} />
+        <Route path='/verification' element={<Verification/>} />
       </Routes>
     </UserContextProvider>
   )

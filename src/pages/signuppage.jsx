@@ -2,6 +2,68 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from "react-router-dom"
 import axiosInstance from '../config/api';
+import Joi from 'joi'
+import Spinner from '../custom/spinner';
+
+const userSchema = Joi.object({
+    firstName: Joi.string().min(1).required().messages({
+        'string.base': 'First name must be a string',
+        'string.empty': 'First name is required',
+        'any.required': 'First name is required',
+    }),
+    lastName: Joi.string()
+    .min(1)
+    .required()
+    .messages({
+      'string.base': 'Last name must be a string',
+      'string.empty': 'Last name is required',
+      'any.required': 'Last name is required',
+    }),
+    email: Joi.string()
+    .email({tlds: {allow: false}})
+    .required()
+    .messages({
+      'string.base': 'Email must be a string',
+      'string.empty': 'Email is required',
+      'string.email': 'Please enter a valid email address',
+      'any.required': 'Email is required',
+    }),
+    gender: Joi.string()
+    .required()
+    .messages({
+      'string.base': 'Gender must be a string',
+      'string.empty': 'Gender is required',
+      'any.required': 'Gender is required',
+    }),
+    password: Joi.string()
+    .min(6)
+    .required()
+    .messages({
+      'string.base': 'Password must be a string',
+      'string.empty': 'Password is required',
+      'string.min': 'Password should be at least 6 characters long',
+      'any.required': 'Password is required',
+    }),
+    address: Joi.string()
+    .min(1)
+    .required()
+    .messages({
+      'string.base': 'Address must be a string',
+      'string.empty': 'Address is required',
+      'any.required': 'Address is required',
+    }),
+    phoneNumber: Joi.string()
+    .pattern(/^\d{10}$/)
+    .required()
+    .messages({
+      'string.base': 'Phone number must be a string',
+      'string.empty': 'Phone number is required',
+      'string.pattern.base': 'Phone number must be a valid 10-digit number',
+      'any.required': 'Phone number is required',
+    }),
+
+})
+
 const Signup = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [firstName, setFirstName] = useState('')
@@ -11,6 +73,8 @@ const Signup = () => {
     const [gender, setGender] = useState('')
     const [address, setAddress] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
+    const [errors, setErrors] = useState({});
+    const [loading ,setLoading] = useState(false)
     const navigate = useNavigate()
     const openPopup = () => {
         setIsPopupOpen(true);
@@ -21,6 +85,7 @@ const Signup = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
+        setLoading(true)
         const data = {
             firstName,
             lastName,
@@ -30,8 +95,19 @@ const Signup = () => {
             email,
             password
         }
-        const response = await axiosInstance.post('/auth/register', data)
-        if(response.data)  navigate('/login') 
+        const { error } = userSchema.validate(data, { abortEarly: false });
+        if (error) {
+            const newErrors = error.details.reduce((acc, curr) => {
+                acc[curr.path[0]] = curr.message;
+                return acc;
+            }, {});
+            setErrors(newErrors);
+            setLoading(false)
+        } else {
+            setErrors({})
+            const response = await axiosInstance.post('/auth/register', data)
+            if(response.data)  navigate('/login') 
+        }
     }
 
     return (
@@ -52,7 +128,7 @@ const Signup = () => {
             </div>
 
             {/* Main Grid */}
-            <div className="grid grid-cols-2 h-[90%]">
+            { loading && <Spinner/> || <div className="grid grid-cols-2 h-[90%]">
                 {/* Login Form with Slide In Animation */}
                 {isPopupOpen == false && (<div className="flex justify-center items-center ">
                     <motion.div
@@ -123,41 +199,48 @@ const Signup = () => {
                                             <div className='flex justify-between gap-6 w-full'>
                                                 <div className='flex flex-col w-full'>
                                                     <label className="font-poppin font-bold text-xs">First name</label>
-                                                    <input className="mt-3  mb-5 h-[50px] w-full rounded-lg bg-white border-[0.3px] border-gray-500" value={firstName} onChange = {e => setFirstName(e.target.value)} />
+                                                    {errors.firstName && <p className='text-red-500 text-[14px]'>{errors.firstName}</p>}
+                                                    <input className={`mt-3 h-[50px] w-full rounded-lg bg-white border-[0.3px] ` + (errors.firstName ? "border-red-500" : "border-gray-500")} value={firstName} onChange = {e => setFirstName(e.target.value)} />
                                                 </div>
                                                 <div className='flex flex-col w-full'>
                                                     <label className="font-poppin font-bold text-xs">Last name</label>
-                                                    <input className="mt-3 h-[50px] w-full rounded-lg bg-white border-[0.3px] border-gray-500" value={lastName} onChange = {e => setLastName(e.target.value)} />
+                                                    {errors.lastName && <p className='text-red-500 text-[14px]'>{errors.lastName}</p>}
+                                                    <input className={`mt-3 h-[50px] w-full rounded-lg bg-white border-[0.3px] ` + (errors.lastName ? "border-red-500" : "border-gray-500")} value={lastName} onChange = {e => setLastName(e.target.value)} />
                                                 </div>
                                             </div>
                                             <div className='col-span-2'>
                                                 <label className="font-poppin font-bold text-xs">Email</label>
-                                                <input className="mt-3 h-[50px] flex justify-center items-center w-full rounded-lg bg-white border-[0.3px] border-gray-500" value={email} onChange = {e => setEmail(e.target.value)}/>
+                                                {errors.email && <p className='text-red-500 text-[14px]'>{errors.email}</p>}
+                                                <input className={`mt-3 h-[50px] w-full rounded-lg bg-white border-[0.3px] ` + (errors.email ? "border-red-500" : "border-gray-500")} value={email} onChange = {e => setEmail(e.target.value)}/>
                                             </div>
                                             <div className='col-span-2 mt-4'>
                                                 <label className="font-poppin font-bold text-xs">Password</label>
-                                                <input className="mt-3 h-[50px] flex justify-center items-center w-full rounded-lg bg-white border-[0.3px] border-gray-500" value={password} onChange = {e => setPassword(e.target.value)}/>
+                                                {errors.password && <p className='text-red-500 text-[14px]'>{errors.password}</p>}
+                                                <input className={`mt-3 h-[50px] w-full rounded-lg bg-white border-[0.3px] ` + (errors.password ? "border-red-500" : "border-gray-500")} value={password} onChange = {e => setPassword(e.target.value)}/>
                                             </div>
                                             <div className=''>
                                                 <label className="font-poppin font-bold text-xs mr-4">Gender</label>
+                                                {errors.gender && <p className='text-red-500 text-[14px]'>{errors.gender}</p>}
                                                 <div className='flex'>
                                                     <div className='col-span-2 mt-4 flex items-center'>
                                                         <input type='radio' value='nam' name = 'gender' onChange = {e => setGender(e.target.value)} />
-                                                        <label className="font-poppin font-bold text-xs mr-4">Nam</label>
+                                                        <label className={`font-poppin font-bold text-xs mr-4 ` + (errors.gender ? "text-red-500" : "")}>Nam</label>
                                                     </div>
                                                     <div className='col-span-2 mt-4 flex items-center'>
                                                         <input type='radio' value='nữ' name = 'gender' onChange = {e => setGender(e.target.value)} />
-                                                        <label className="font-poppin font-bold text-xs mr-4">Nữ</label>
+                                                        <label className={`font-poppin font-bold text-xs mr-4 ` + (errors.gender ? "text-red-500" : "")}>Nữ</label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className='col-span-2 mt-4'>
                                                 <label className="font-poppin font-bold text-xs">Address</label>
-                                                <input className="mt-3 h-[50px] flex justify-center items-center w-full rounded-lg bg-white border-[0.3px] border-gray-500" value={address} onChange = {e => setAddress(e.target.value)}/>
+                                                {errors.address && <p className='text-red-500 text-[14px]'>{errors.address}</p>}
+                                                <input className={`mt-3 h-[50px] w-full rounded-lg bg-white border-[0.3px] ` + (errors.address ? "border-red-500" : "border-gray-500")} value={address} onChange = {e => setAddress(e.target.value)}/>
                                             </div>
                                             <div className='col-span-2 mt-4'>
                                                 <label className="font-poppin font-bold text-xs">Phone Number</label>
-                                                <input className="mt-3 h-[50px] flex justify-center items-center w-full rounded-lg bg-white border-[0.3px] border-gray-500" value={phoneNumber} onChange = {e => setPhoneNumber(e.target.value)}/>
+                                                {errors.phoneNumber && <p className='text-red-500 text-[14px]'>{errors.phoneNumber}</p>}
+                                                <input className={`mt-3 h-[50px] w-full rounded-lg bg-white border-[0.3px] ` + (errors.phoneNumber ? "border-red-500" : "border-gray-500")} value={phoneNumber} onChange = {e => setPhoneNumber(e.target.value)}/>
                                             </div>
                                             <div className='col-span-2 text-xs font-poppin flex justify-center items-center w-full h-20'>
                                                 <label>Already have an account? </label>
@@ -186,7 +269,7 @@ const Signup = () => {
                         className="ml-7 absolute w-1/3 h-5/6 z-10" />
                     <div className=" absolute w-1/3 h-[30%] bg-customBlue rounded-xl z-0" />
                 </div>
-            </div >
+            </div >}
 
         </div >
     )

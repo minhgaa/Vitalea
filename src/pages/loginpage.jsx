@@ -3,33 +3,52 @@ import { useState } from 'react';
 import axiosInstance from '../config/api';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../custom/spinner';
+import EmailModal from '../custom/emailModal';
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
+    const [verification, setVerification] = useState(false)
     const navigate = useNavigate()
     const handleLogin = async (event) => {
         event.preventDefault()
         setLoading(true)
-        const response = await axiosInstance.post('/auth/login', {
-            email,
-            password
-        })
-        if (response.data.account.role === "DOCTOR") {
-            response.data.account.doctor.role = response.data.account.role
-            response.data.account.doctor.image = response.data.account.image
-            localStorage.setItem('doctor', JSON.stringify(response.data.account.doctor))
-            navigate('/mainpage')
-        } else if (response.data.account.role === "USER") {
-            response.data.account.user.role = response.data.account.role
-            response.data.account.user.image = response.data.account.image
-            localStorage.setItem('user', JSON.stringify(response.data.account.user))
-            navigate('/')
-        } else navigate('/admin/doctors')
+        try {
+            setError(false)
+            setErrorMessage('')
+            const response = await axiosInstance.post('/auth/login', {
+                email,
+                password
+            })
+            if (response.data.token) {
+                setVerification(true)
+                setLoading(false)    
+                return
+            }
+            if (response.data.account.role === "DOCTOR") {
+                response.data.account.doctor.role = response.data.account.role
+                response.data.account.doctor.image = response.data.account.image
+                localStorage.setItem('doctor', JSON.stringify(response.data.account.doctor))
+                navigate('/mainpage')
+            } else if (response.data.account.role === "USER") {
+                response.data.account.user.role = response.data.account.role
+                response.data.account.user.image = response.data.account.image
+                localStorage.setItem('user', JSON.stringify(response.data.account.user))
+                navigate('/')
+            } else navigate('/admin/doctors')
+        } catch (error) {
+            if (error){
+                setLoading(prevState => !prevState)
+                setError(true)
+                setErrorMessage("Email hoặc mật khẩu không chính xác, vui lòng thử lại !!!")
+            }
+        }
     }
 
     return (
-        <div className="w-screen h-screen overflow-hidden">
+        <div className="relative w-screen h-screen overflow-hidden">
 
             {/* Main Grid */}
             {loading && <Spinner/> || <div className="grid grid-cols-2 h-[90%]">
@@ -63,14 +82,15 @@ const Login = () => {
                                         </label>
                                         <div className="absolute mt-1 h-[0.5px] w-full bg-gray-500" />
                                     </div>
+                                    {errorMessage && <p className='font-bold text-red-500 text-[14px]'>{errorMessage}</p>}
                                     <form onSubmit={handleLogin}>
-                                        <label className="font-poppin font-bold text-xs">Email</label>
-                                        <div className="mt-3 mb-5 p-4 w-full rounded-lg bg-white border-[0.3px] border-gray-500">
-                                            <input className='outline-none border-none w-full' type='text' placeholder='Nhập email của bạn...' onChange={e => setEmail(e.target.value)} />
+                                        <label className={`font-poppin font-bold text-xs ` + (error ? "text-red-500 font-bold" : "")}>Email</label>
+                                        <div className={`mt-3 mb-5 p-4 w-full rounded-lg bg-white border-[0.3px] ` + (error ? "border-red-500" : "border-gray-500")}>
+                                            <input className={`outline-none border-none w-full ` + (error ? "placeholder-red-500" : "")} type='text' placeholder='Nhập email của bạn...' onChange={e => {setError(false); setEmail(e.target.value); setErrorMessage('')}} />
                                         </div>
-                                        <label className="font-poppin font-bold text-xs">Password</label>
-                                        <div className="mt-3 mb-5 p-4 w-full rounded-lg bg-white border-[0.3px] border-gray-500">
-                                            <input className='outline-none border-none w-full' type='password' placeholder='Nhập mật khẩu của bạn...' onChange={e => setPassword(e.target.value)}/>
+                                        <label className={`font-poppin font-bold text-xs ` + (error ? "text-red-500 font-bold" : "")}>Password</label>
+                                        <div className={`mt-3 mb-5 p-4 w-full rounded-lg bg-white border-[0.3px] ` + (error ? "border-red-500" : "border-gray-500")}>
+                                            <input className={`outline-none border-none w-full ` + (error ? "placeholder-red-500" : "")} type='password' placeholder='Nhập mật khẩu của bạn...' onChange={e => setPassword(e.target.value)}/>
                                         </div>
                                         <div className="mt-5 flex justify-end h-10 w-full">
                                             <button type='submit' className="h-10 w-10">
@@ -94,6 +114,12 @@ const Login = () => {
                         className="ml-7 absolute w-1/3 h-5/6 z-10" />
                     <div className=" absolute w-1/3 h-[30%] bg-customBlue rounded-xl z-0" />
                 </div>
+            </div>}
+            {verification && <div>
+                <div className='absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] z-[99]'>
+                    <EmailModal setVerification = {setVerification} email = {email}/>
+                </div>
+                <div className='absolute top-0 left-0 h-screen w-screen bg-black opacity-50 z-[98]'></div>    
             </div>}
         </div>
     )

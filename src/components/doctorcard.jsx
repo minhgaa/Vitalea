@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { IoInformationCircleOutline } from "react-icons/io5";
 const DoctorCard = ({doctor}) => {

@@ -6,6 +6,7 @@ import DayGrid from '../custom/daygrid';
 import CustomBarChart from '../custom/custombarchart'; // Import CustomBarChart
 import axiosInstance from '../config/api';
 import { useAuthContext } from '../context/AuthContext';
+import Dropdownmenu from '../custom/dropdownmenu';
 
 const Mainpage = () => {
     const {authUser} = useAuthContext()
@@ -108,7 +109,6 @@ const Mainpage = () => {
         { label: 'Working Schedule', icon: "src/assets/rep.svg", link: "/working-schedule" },
         { label: 'Settings', icon: "src/assets/set.svg", link: "/settings" },
     ];
-
     return (
         <div className="w-screen h-screen">
             {/* Header */}
@@ -141,19 +141,22 @@ const Mainpage = () => {
                                 label1='Appointments Today'
                                 label2='2.9k' />
                         </div>
-                        <div className='col-span-1 flex justify-center items-center'>
-                            <div className='w-[90%] h-[96.5%] bg-white rounded-md pt-3'>
+                        <div className='col-span-1 flex flex-col justify-center items-center'>
+                            {/* <div className='w-[90%] h-[96.5%] bg-white rounded-md pt-3'>
                                 <label className='p-5 font-inter font-bold text-xs'> Patients overview </label>
                                 <CustomBarChart data={data} />
-                            </div>
+                            </div> */}
+                            <img className='rounded-full w-[150px] h-[150px]' src='/public/pictures_healthcare/Chanthuongchinhhinh.webp' />
+                            <h3 className='font-bold text-lg'>Chào mừng trở lại, Dr.Hoc Nguyen</h3>
                         </div>
+
                     </div>
                     <div className='grid grid-cols-4 row-span-3'>
                         <div className='col-span-3 flex justify-center items-center'>
                             <div className='h-[96.5%] w-[93.5%] grid grid-rows-8 bg-white rounded-md'>
                                 <div className='row-span-2 pt-3 border-gray-300 border-b'>
                                     <label className='p-5 font-inter font-bold text-xs'> Upcoming appointment</label>
-                                    <DayGrid />
+                                    <DayGrid/>
                                 </div>
                                 <div className='row-span-6 mt-3'>
                                     <label className='p-5 font-inter font-bold text-xs'> Schedule list</label>
