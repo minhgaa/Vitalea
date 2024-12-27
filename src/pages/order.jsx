@@ -9,7 +9,7 @@ import Spinner from "../custom/spinner";
 const Order = () => {
     const [orders, setOrders] = useState([]);
     const [activeOrder, setActiveOrder] = useState([]);
-    const [loading, setLoading] = useState(false);  // Add loading state
+    const [loading, setLoading] = useState(false);
     const { authUser } = useAuthContext();
 
     const item = [

@@ -5,6 +5,7 @@ import axiosInstance from "../config/api";
 import { useParams } from "react-router-dom";
 import { useSocketContext } from "../context/SocketContext";
 import { useAuthContext } from "../context/AuthContext";
+import Spinner from "../custom/spinner";
 
 const Conversation = () => {
     const {id} = useParams()
@@ -16,11 +17,19 @@ const Conversation = () => {
     const {socket} = useSocketContext()
     const {authUser} = useAuthContext()
     const [ownLastMessage, setOwnLastMessage] = useState(false)
+    const [loading, setLoading] = useState(false)
     const getConversation = useCallback(async () => {
-        const response = await axiosInstance.post(`/conversation/getconversation/${id}`)
-        setConversation(response.data)
-        setMessages(response.data.messages)
-        if (response.data.lastMessage.split(":")[0] === authUser.accountId) setOwnLastMessage(true)
+      setLoading(true)
+      try {
+          const response = await axiosInstance.post(`/conversation/getconversation/${id}`)
+          setConversation(response.data)
+          setMessages(response.data.messages)
+          if (response.data.lastMessage.split(":")[0] === authUser.accountId) setOwnLastMessage(true)
+      } catch (err) {
+          console.log(err)
+      } finally {
+          setLoading(false)
+      }
     }, [id, authUser.accountId])
 
     const getAllConversations = useCallback(async () => {
@@ -177,7 +186,9 @@ const Conversation = () => {
         <div className="border-r border-gray-300 col-span-1 flex justify-center items-start">
           <Nav items={item} />
         </div>
-        <div className="col-span-5 grid grid-cols-4 p-4 bg-customBg">
+        {loading ? (<div className="fixed top-0 left-0 h-screen w-screen">
+                        <Spinner />
+                    </div>) : <div className="col-span-5 grid grid-cols-4 p-4 bg-customBg">
           <div className="col-span-1 bg-white rounded">
             <div className="flex justify-between p-4 border-b border-gray-300">
               <p className="font-semibold">Messages</p>
@@ -199,10 +210,10 @@ const Conversation = () => {
                   />
                   <div className="flex-grow min-w-0">
                     <p className="text-xs font-semibold truncate">
-                      {message?.user?.firstName} {message?.user?.lastName}
+                      {message?.doctor?.firstName} {message?.doctor?.lastName}
                     </p>
                     <p className="text-xs text-gray-600 truncate w-full">
-                    {ownLastMessage ? `Bạn: ${message?.lastMessage.split(":")[1]}` : `${message?.doctor?.firstName} ${message?.doctor?.lastName}: ${message?.lastMessage.split(":")[1]} `}
+                      {ownLastMessage ? `Bạn: ${message?.lastMessage.split(":")[1]}` : `${message?.doctor?.firstName} ${message?.doctor?.lastName}: ${message?.lastMessage.split(":")[1]} `}
                     </p>
                   </div>
                 </div>
@@ -217,7 +228,7 @@ const Conversation = () => {
                   src={currentMessage.user.avatar}
                   alt=""
                 />
-                <p className="font-semibold">{conversation?.user?.firstName} {conversation?.user?.lastName}</p>
+                <p className="font-semibold">{conversation?.doctor?.firstName} {conversation?.doctor?.lastName}</p>
               </div>
               <div className="flex gap-4">
                 <button>
@@ -280,7 +291,7 @@ const Conversation = () => {
               </form>
             </div>
           </div>
-        </div>
+        </div>}
       </div>
     </div>
   );
