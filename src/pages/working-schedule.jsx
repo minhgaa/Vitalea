@@ -9,6 +9,7 @@ import Select from '@mui/material/Select';
 import { useCallback, useEffect, useState } from "react";
 import axiosInstance from "../config/api";
 import { useAuthContext } from "../context/AuthContext";
+import { ToastContainer, toast } from "react-toastify";
 const WorkingSchedule = () => {
     const {authUser} = useAuthContext()
     const item = [
@@ -30,6 +31,9 @@ const WorkingSchedule = () => {
         setTo(prevState => ({...prevState, [day]: event.target.value}))
 
     };
+    const notifySuccess = () => {
+        toast.success("Chỉnh sửa thành công!!!"); // This will show the success toast
+      };
     const handleSubmit = async () => {
         const dayChanged = []
         for (let i = 0; i < Object.keys(from).length; i++){
@@ -44,11 +48,9 @@ const WorkingSchedule = () => {
                 to: Object.values(to)[i]
             })
         }
-        const response = await axiosInstance.patch(`/working-schedule/${authUser.id}`, connectDay(dayChanged))
-
-        console.log(response)
+        await axiosInstance.patch(`/working-schedule/${authUser.id}`, connectDay(dayChanged))
+        notifySuccess()
     }
-
     const connectDay = (arr) => {
             const output = []
             arr.forEach(item => {
@@ -164,6 +166,7 @@ const WorkingSchedule = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer position="top-right"/>
         </div>
     )
 }

@@ -3,28 +3,22 @@ import Header from '../components/header';
 import Nav from '../components/Nav/nav';
 import InfoCard from '../custom/infocard';
 import DayGrid from '../custom/daygrid';
-import CustomBarChart from '../custom/custombarchart'; // Import CustomBarChart
 import axiosInstance from '../config/api';
 import { useAuthContext } from '../context/AuthContext';
-import Dropdownmenu from '../custom/dropdownmenu';
-
+import { ToastContainer, toast } from "react-toastify";
 const Mainpage = () => {
     const {authUser} = useAuthContext()
     const [upcomingRequests, setUpcomingRequests] = useState([])
     const [appointments, setAppointments] = useState([])
-    const data = [
-        { value: 17 },
-        { value: 45 },
-        { value: 155 },
-        { value: 220 },
-        { value: 105 },
-        { value: 10 },
-    ];
+    const [date, setDate] = useState("")
+    const notify = (message) => {
+        toast.success(message); // This will show the success toast
+      };
 
     const getUpcomingRequests = useCallback(async () => {
         const response = await axiosInstance.post('/appointment/getappointments', {
             "doctorId": authUser.id,
-            "status": "Pending"
+            "status": "Pending",
         })
         setUpcomingRequests(response.data)
     }, [authUser.id])
@@ -32,72 +26,41 @@ const Mainpage = () => {
     const getAppointments = useCallback(async () => {
         const response = await axiosInstance.post('/appointment/getappointments', {
             "doctorId": authUser.id,
-            "status": "Approve"
+            "status": "Accept",
+            "date": date
         })
-        console.log(response.data)
         setAppointments(response.data)
-    }, [authUser.id])
+    }, [authUser.id, date])
 
     useEffect(() => {
         getUpcomingRequests()
         getAppointments()
     }, [getUpcomingRequests, getAppointments])
 
-    
-    const [requests, setRequests] = useState([
-        {
-            id: 1,
-            name: 'John Doe',
-            avatar: 'https://via.placeholder.com/50', 
-            dateTime: '2024-10-04 10:00 AM',
-            counselling: 'Consultation',
-        },
-        {
-            id: 2,
-            name: 'Jane Smith',
-            avatar: 'https://via.placeholder.com/50',
-            dateTime: '2024-10-05 11:30 AM',
-            counselling: 'Therapy Session',
-        },
-        {
-            id: 1,
-            name: 'John Doe',
-            avatar: 'https://via.placeholder.com/50', 
-            dateTime: '2024-10-04 10:00 AM',
-            counselling: 'Consultation',
-        },
-        {
-            id: 2,
-            name: 'Jane Smith',
-            avatar: 'https://via.placeholder.com/50',
-            dateTime: '2024-10-05 11:30 AM',
-            counselling: 'Therapy Session',
-        },
-        {
-            id: 2,
-            name: 'Jane Smith',
-            avatar: 'https://via.placeholder.com/50',
-            dateTime: '2024-10-05 11:30 AM',
-            counselling: 'Therapy Session',
-        },
-        {
-            id: 2,
-            name: 'Jane Smith',
-            avatar: 'https://via.placeholder.com/50',
-            dateTime: '2024-10-05 11:30 AM',
-            counselling: 'Therapy Session',
-        },
-    ]);
+
 
     
-    const handleApprove = (id) => {
-        setRequests(requests.filter(request => request.id !== id));
+    const handleApprove = async (id, status) => {
+        const response = await axiosInstance.patch('/appointment/update', {
+            appointmentId: id,
+            status
+        })
+        if (response.status === 200) {
+            notify("Xác nhận thành công")
+            window.location.reload()
+        }
         
     };
 
-    const handleReject = (id) => {
-        setRequests(requests.filter(request => request.id !== id));
-        
+    const handleReject = async (id, status) => {
+        const response = await axiosInstance.patch('/appointment/update', {
+            appointmentId: id,
+            status
+        })
+        if (response.status === 200) {
+            notify("Từ chối thành công")
+            window.location.reload()
+        }
     };
 
     const item = [
@@ -156,7 +119,7 @@ const Mainpage = () => {
                             <div className='h-[96.5%] w-[93.5%] grid grid-rows-8 bg-white rounded-md'>
                                 <div className='row-span-2 pt-3 border-gray-300 border-b'>
                                     <label className='p-5 font-inter font-bold text-xs'> Upcoming appointment</label>
-                                    <DayGrid/>
+                                    <DayGrid doctorId = {authUser.id} setAppointments={setAppointments} setDate = {setDate}/>
                                 </div>
                                 <div className='row-span-6 mt-3'>
                                     <label className='p-5 font-inter font-bold text-xs'> Schedule list</label>
@@ -170,7 +133,7 @@ const Mainpage = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {appointments.map((appointment, index) => (
+                                                {appointments.length > 0 && appointments?.map((appointment, index) => (
                                                     <tr key={index} className="border-b h-14 text-xs hover:bg-gray-100 transition duration-200">
                                                         <td className="py-2 px-4 text-start">{appointment?.user?.firstName} {appointment?.user?.lastName}</td>
                                                         <td className="py-2 px-4 text-start">{appointment?.workingShift.time}, {appointment?.workingShift.date}</td>
@@ -187,13 +150,13 @@ const Mainpage = () => {
                                 <label className='p-5  font-inter font-bold text-xs'> Appoint Request</label>
                                 
                                 <div className="overflow-y-auto max-h-[350px] mt-3 ">
-                                    {upcomingRequests.map((request, index) => (
+                                    {upcomingRequests.length > 0 && upcomingRequests?.map((request, index) => (
                                         <div key={index} className='flex justify-center'>
                                             <div className="mt-3 flex items-center p-4 border rounded-md w-[90%]">
                                                 <div className="flex items-center">
                                                     <div className='w-10 h-10 rounded-full overflow-hidden'>
                                                         <img
-                                                        src={`http://localhost:3000/${request?.user?.account?.image}`}
+                                                        src={(request?.user?.account?.image !== 'none') || "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"}
                                                         alt='user-avatar'
                                                         />
                                                     </div>
@@ -204,14 +167,14 @@ const Mainpage = () => {
                                                         <div className='space-x-2 mt-3'>
                                                             <button
                                                                 className="bg-customBlue text-white w-[45%] h-[25px] rounded-md text-xs hover:bg-green-600"
-                                                                onClick={() => handleApprove(request.id)}
+                                                                onClick={() => handleApprove(request.id, 'Accept')}
                                                             >
                                                                 Accept
                                                             </button>
 
                                                             <button
                                                                 className=" bg-red-500 text-white w-[45%] h-[25px] rounded-md text-xs hover:bg-red-600"
-                                                                onClick={() => handleReject(request.id)}
+                                                                onClick={() => handleReject(request.id, 'Reject')}
                                                             >Reject</button>
                                                         </div>
                                                     </div>
@@ -225,6 +188,7 @@ const Mainpage = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer position='top-right'/>
         </div>
     );
 }

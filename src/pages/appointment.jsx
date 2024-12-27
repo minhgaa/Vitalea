@@ -6,7 +6,7 @@ import axiosInstance from "../config/api";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
-
+import { ToastContainer, toast } from "react-toastify";
 const Appointment = () => {
     const {id} = useParams()
     const fileRef = useRef(null)
@@ -18,6 +18,10 @@ const Appointment = () => {
     const dayOfWeek = currentDate.getDay();
     const offset = (dayOfWeek === 0) ? -6 : 1 - dayOfWeek; 
     const {authUser} = useAuthContext()
+
+    const notifySuccess = () => {
+        toast.success("Đặt lịch thành công !!!"); // This will show the success toast
+    };
 
     for (let i = 0; i < 6; i++) {
     const date = new Date(currentDate);
@@ -69,13 +73,13 @@ const Appointment = () => {
         data.append('note', 123)
         data.append('doctorId', id)
         data.append('userId', authUser.id)
-        const response = await axios({
+        await axios({
             method: 'POST',
             url: 'http://localhost:3000/api/appointment',
             data,
             headers: {'Content-Type': 'multipart/form-data'}
         })
-        console.log(response)
+        notifySuccess()
     }
     return (
         <div className="bg-[#F1F5F9] h-screen">
@@ -147,7 +151,7 @@ const Appointment = () => {
                     <p className="text-[18px] font-bold text-customBlue">3. Thông tin đặt khám</p>
                     <div className="py-4 mt-6 border-t border-b flex items-center">
                         <div className="w-[75px] h-[75px] rounded-full overflow-hidden">
-                            <img className="w-full h-full object-cover" src={`http://localhost:3000/${doctor?.account?.image}`}/>
+                            <img className="w-full h-full object-cover" src={doctor?.account?.image}/>
                         </div>
                         <div className="ml-2">
                             <p className="text-[14px] font-bold">BS. {doctor.firstName} {doctor.lastName}</p>
@@ -171,6 +175,7 @@ const Appointment = () => {
                     <form onSubmit={e => handleSubmit(e)} className="mt-6 p-2 bg-customBlue text-center rounded-md text-white font-bold text-[18px] cursor-pointer"><button className="w-full" type="submit">Xác nhận</button></form>
                 </div>
             </div>
+            <ToastContainer position="top-right" />
         </div>
     )
 }

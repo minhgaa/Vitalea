@@ -31,6 +31,7 @@ import ManageDoctors from './pages/admin-doctors'
 import VideoChat from './pages/video-chat'
 import { useAuthContext } from './context/AuthContext'
 import Verification from './pages/verification'
+import UserConversation from './pages/user-conversation'
 function App() {
   const {authUser} = useAuthContext()
   console.log(authUser)
@@ -77,6 +78,7 @@ function App() {
         <Route path='/user/profile' element={<Profile/>} />
         <Route path='/user/settings' element={<ChangePassword/>} />
         <Route path='/conversation/:id' element={<Conversation/>} />
+        <Route path='/user/conversation/:id' element={<UserConversation/>} />
         <Route path='/user/messages' element={<UserMessages/>} />
         <Route path='/blogs' element={<Blogs/>} />
         <Route path='/doctors/search' element={<DoctorSearch/>} />

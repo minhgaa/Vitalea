@@ -51,7 +51,7 @@ const UserMessages = () => {
             </div>
             <div className="overflow-y-auto h-[calc(100vh-154px)] py-2 pl-2 pr-3">
               {allConversations?.map((conversation, index) => (
-                <Link to={`/conversation/${conversation.id}`} key={index}>
+                <Link to={`/user/conversation/${conversation.id}`} key={index}>
                   <div
                     className="flex items-center gap-3 p-3 rounded hover:bg-gray-200 hover:cursor-pointer w-full">
                     <img

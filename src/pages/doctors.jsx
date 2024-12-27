@@ -87,7 +87,7 @@ const Doctors = () => {
                             <div key={index} className="mt-6 p-4 rounded-md border border-[#DEDEDE] !flex items-center justify-between">
                                 <div className="flex">
                                     <div className="w-[150px] h-[150px] rounded-full overflow-hidden">
-                                    <img src={`http://localhost:3000/${doctor.account.image}`}/>
+                                    <img src={doctor.account.image}/>
                                     </div>
                                     <div className="ml-4">
                                         <p className="font-bold text-[18px]">{doctor.firstName} {doctor.lastName}</p>

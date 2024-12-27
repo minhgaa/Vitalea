@@ -50,20 +50,19 @@ const Profile = () => {
                     <h1 className="text-[32px] font-bold">Hồ sơ cá nhân</h1>
                     <div className="w-2/4 mx-auto bg-white rounded-md h-[70vh] p-4 overflow-y-scroll">
                         <div className="flex flex-col items-center">
-                            <label htmlFor="img"><img className="w-[80px] h-[80px] rounded-full cursor-pointer" src={(file || `http://localhost:3000/${authUser.image}`)}/></label>
+                            <label htmlFor="img"><img className="w-[80px] h-[80px] rounded-full cursor-pointer" src={(file || (authUser.image !== 'none') && `http://localhost:3000/${authUser.image}` || "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg")}/></label>
                             <input onChange={e => handleChangeAvatar(e)} className="hidden" id="img" type="file" />
-                            <p className="mt-1 font-bold">Nguyễn Phi Học</p>
                             <p className="mt-1 font-bold text-gray-500">Mã BN: YMP241972776</p>
                         </div>
                         <div className="px-6">
                             <h3 className="font-bold text-[18px]">Thông tin cơ bản</h3>
                             <div className="flex justify-between mb-4 mt-4">
                                 <p>Họ và tên</p>
-                                <p>Nguyễn Phi Học</p>
+                                <p>{authUser.firstName} {authUser.lastName}</p>
                             </div>
                             <div className="flex justify-between mb-4">
                                 <p>Điện thoại</p>
-                                <p>0865562334</p>
+                                <p>{authUser.phone}</p>
                             </div>
                             <div className="flex justify-between mb-4">
                                 <p>Ngày sinh</p>
@@ -75,7 +74,7 @@ const Profile = () => {
                             </div>
                             <div className="flex justify-between mb-4">
                                 <p>Địa chỉ</p>
-                                <p className="w-1/2 text-end">1276, tỉnh lộ 7, ấp xóm Trại, xã An Nhơn Tây, TPHCM</p>
+                                <p className="w-1/2 text-end">{authUser.address}</p>
                             </div>
                         </div>
                         <div className="px-6">

@@ -9,11 +9,12 @@ import { useAuthContext } from '../context/AuthContext';
 const Appoiments = () => {
     const {authUser} = useAuthContext()
     const [appointments, setAppointments] = useState([])
-
+    const [type, setSelectType] = useState('This day')
     const getAppointments = useCallback(async () => {
         const response = await axiosInstance.post('/appointment/getappointments', {
             "doctorId": authUser.id,
-            "status": "Approve"
+            "status": "Accept",
+            "date": `${new Date().getDate()}/${new Date().getMonth() + 1}/2024`
         })
         setAppointments(response.data)
     }, [authUser.id])
@@ -51,7 +52,7 @@ const Appoiments = () => {
                             <div className=' flex flex-row space-x-2 mr-5'>
                                 <div className=''>
                                     <label className='mr-3 text-gray-400 text-sm'>Appointments</label>
-                                    <Dropdownmenu data={menuData} />
+                                    <Dropdownmenu setSelectType = {setSelectType} data={menuData} />
                                 </div>
                                 <div className=''>
                                     <label className='mr-3 text-gray-400 text-sm'>Sort by</label>
@@ -62,49 +63,6 @@ const Appoiments = () => {
                     </div>
                     <div className='row-span-10 grid grid-cols-5'>
                         <div className='col-span-2 grid grid-rows-2'>
-                            <div className='flex justify-center items-center' >
-                                <div className='bg-white row-span-1 rounded-md w-[90%] h-[95%]'>
-                                    <div className='h-full w-full flex flex-col justify-center items-center space-y-2 xl:space-y-4'>
-                                        <div className='h-[60px] w-[90%] border flex items-center rounded-md bg-white'>
-                                            <div className='ml-5 w-[40px] h-[40px] flex justify-center items-center rounded-lg border border-gray-500'>
-                                                <img src="src/assets/apptoday.svg" className='w-[60%] h-[60%]' />
-                                            </div>
-                                            <div className='ml-5 h-[40px] flex flex-col justify-between'>
-                                                <label className='font-inter text-xs'>Total Appointments</label>
-                                                <label className='flex font-inter text-xs font-bold'>12k</label>
-                                            </div>
-                                        </div>
-                                        <div className='h-[60px] w-[90%] border flex items-center rounded-md bg-white'>
-                                            <div className='ml-5 w-[40px] h-[40px] flex justify-center items-center rounded-lg border border-gray-500'>
-                                                <img src="src/assets/overall.svg" className='w-[60%] h-[60%]' />
-                                            </div>
-                                            <div className='ml-5 h-[40px] flex flex-col justify-between'>
-                                                <label className='font-inter text-xs'>Compeleted Counselling</label>
-                                                <label className='flex font-inter text-xs font-bold'>12k</label>
-                                            </div>
-                                        </div>
-                                        <div className='h-[60px] w-[90%] border flex items-center rounded-md bg-white'>
-                                            <div className='ml-5 w-[40px] h-[40px] flex justify-center items-center rounded-lg border border-gray-500'>
-                                                <img src="src/assets/pendapp.svg" className='w-[60%] h-[60%]' />
-                                            </div>
-                                            <div className='ml-5 h-[40px] flex flex-col justify-between'>
-                                                <label className='font-inter text-xs'>Pending Appointments</label>
-                                                <label className='flex font-inter text-xs font-bold'>12k</label>
-                                            </div>
-                                        </div>
-                                        <div className='h-[60px] w-[90%] border flex items-center rounded-md bg-white'>
-                                            <div className='ml-5 w-[40px] h-[40px] flex justify-center items-center rounded-lg border border-gray-500'>
-                                                <img src="src/assets/cancel.svg" className='w-[60%] h-[60%]' />
-                                            </div>
-                                            <div className='ml-5 h-[40px] flex flex-col justify-between'>
-                                                <label className='font-inter text-xs'>Cancel Appointments</label>
-                                                <label className='flex font-inter text-xs font-bold'>12k</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
                         </div>
                         <div className='col-span-3 flex justify-start items-start'>
                             <div className='bg-white h-[97.5%] rounded-md w-[96.5%] p-4'>

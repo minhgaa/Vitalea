@@ -5,16 +5,17 @@ import Modal from "./modal";
 import { useState } from "react";
 import axiosInstance from "../config/api";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../context/AuthContext";
 const CounselingCard = ({ date, time, sessionTitle, profile }) => {
     const [toggle, setToggle] = useState(false)
     const navigate = useNavigate()
     const handleToggle = () => {
         setToggle(prevState => !prevState)
     }
-
+    const {authUser} = useAuthContext()
     const handleOpenMessage = async (userId) => {
         const response = await axiosInstance.post('/conversation', {
-            userId1: 2,
+            userId1: authUser.id,
             userId2: userId
         })
         navigate(`/conversation/${response.data.id}`)
@@ -37,7 +38,7 @@ const CounselingCard = ({ date, time, sessionTitle, profile }) => {
 
             <div className="flex items-center border-t h-16 w-full border-gray-400">
                 <img
-                    src="https://via.placeholder.com/50"
+                    src={profile.account.image}
                     alt="Profile"
                     className="w-10 h-10 rounded-full object-cover mr-3"
                 />

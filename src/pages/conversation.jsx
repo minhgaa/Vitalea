@@ -15,16 +15,18 @@ const Conversation = () => {
     const [allConversations, setAllConversations] = useState([])
     const {socket} = useSocketContext()
     const {authUser} = useAuthContext()
+    const [ownLastMessage, setOwnLastMessage] = useState(false)
     const getConversation = useCallback(async () => {
         const response = await axiosInstance.post(`/conversation/getconversation/${id}`)
         setConversation(response.data)
         setMessages(response.data.messages)
-    }, [id])
+        if (response.data.lastMessage.split(":")[0] === authUser.accountId) setOwnLastMessage(true)
+    }, [id, authUser.accountId])
 
     const getAllConversations = useCallback(async () => {
-        const response = await axiosInstance.get('/conversation/1')
+        const response = await axiosInstance.get(`/conversation/${authUser.id}`)
         setAllConversations(response.data)
-    }, [])
+    }, [authUser.id])
     useEffect(() => {
         getConversation()
         getAllConversations()
@@ -200,7 +202,7 @@ const Conversation = () => {
                       {message?.user?.firstName} {message?.user?.lastName}
                     </p>
                     <p className="text-xs text-gray-600 truncate w-full">
-                      {message?.lastMessage}
+                    {ownLastMessage ? `Bạn: ${message?.lastMessage.split(":")[1]}` : `${message?.doctor?.firstName} ${message?.doctor?.lastName}: ${message?.lastMessage.split(":")[1]} `}
                     </p>
                   </div>
                 </div>

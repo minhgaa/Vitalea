@@ -1,14 +1,17 @@
+/* eslint-disable react/prop-types */
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-const Dropdownmenu = ({ initialLabel, data }) => {
+const Dropdownmenu = ({ data, setSelectMonth, setSelectType }) => {
     const [label, setLabel] = useState(data[0]); 
     const [isOpen, setIsOpen] = useState(false); 
    
     const handleSelect = (item) => {
         setLabel(item);
         setIsOpen(false);
+        if (setSelectMonth) setSelectMonth(item.split(" ")[1])
+        if (setSelectType) setSelectType(item)
     };
 
     return (
