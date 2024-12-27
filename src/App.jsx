@@ -99,6 +99,6 @@ const DoctorRoute = ({user, children}) => {
     return <Navigate to='/login'/>
   }
   if (user.role === 'DOCTOR') return children
-  return <Navigate to ='/'/>
+  return <Navigate to ='/mainpage'/>
 } 
 export default App

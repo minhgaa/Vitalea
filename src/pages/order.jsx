@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 import Header from "../components/header"
 import Nav from "../components/Nav/nav"
 import axiosInstance from '../config/api'
+import EmptyOrder from "../components/emptyOrder"
 const Order = () => {
     const [orders, setOrders] = useState([])
     const [activeOrder, setActiveOrder] = useState([])
@@ -16,7 +17,6 @@ const Order = () => {
     const getOrders = useCallback(async () => {
         const response = await axiosInstance.get('/appointment/1')
         setOrders(response.data)
-        console.log(response.data[0])
         setActiveOrder(response.data[0])
     }, [])
     useEffect(() => {
@@ -33,7 +33,7 @@ const Order = () => {
                 <div className='border-r border-gray-300 col-span-1 flex justify-center items-start'>
                     <Nav items={item} />
                 </div>
-                <div className="p-8 bg-[#F3F4F6] w-full">
+                {orders.length ? <div className="p-8 bg-[#F3F4F6] w-full">
                     <h1 className="text-[32px] font-bold">Lịch khám</h1>
                     <div className="flex w-3/4 mx-auto">
                         {orders.map((order, index) => {
@@ -113,7 +113,7 @@ const Order = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> : <EmptyOrder/>}
             </div>
         </div>
     )

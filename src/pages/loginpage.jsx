@@ -27,16 +27,20 @@ const Login = () => {
                 setLoading(false)    
                 return
             }
+            console.log(response.data.account.role === "DOCTOR")
             if (response.data.account.role === "DOCTOR") {
                 response.data.account.doctor.role = response.data.account.role
                 response.data.account.doctor.image = response.data.account.image
-                localStorage.setItem('doctor', JSON.stringify(response.data.account.doctor))
-                navigate('/mainpage')
+                await localStorage.setItem('doctor', JSON.stringify(response.data.account.doctor))
+                console.log("Navigating to /mainpage...");
+                navigate("/mainpage")
+                window.location.reload()
             } else if (response.data.account.role === "USER") {
                 response.data.account.user.role = response.data.account.role
                 response.data.account.user.image = response.data.account.image
                 localStorage.setItem('user', JSON.stringify(response.data.account.user))
                 navigate('/')
+                window.location.reload()
             } else navigate('/admin/doctors')
         } catch (error) {
             if (error){

@@ -55,39 +55,6 @@ const Landing = () => {
                 <div className="border rounded-md w-1/2 p-2 ">
                     <input className="w-full outline-none" type="text" placeholder="Nhập vào triệu chứng của bạn..."/>
                 </div>
-                {/* <div className="w-full h-[35%] flex mt-2">
-                    <span className="ml-[6%] h-full w-[25%] font-cabin font-bold text-2xl">Best service</span>
-                    <button className={getButtonClasses(1)}
-                        onClick={() => handleButtonClick(1)}>
-                        <div className="text-start">
-                            Online<br />Booking
-                        </div>
-                        <div className="pt-[10%] flex items-center w-full flex-row justify-between">
-                            <CiCirclePlus className="w-10 h-10" />
-                            <span className="mt-4">1</span>
-                        </div>
-                    </button>
-                    <button className={getButtonClasses(2)}
-                        onClick={() => handleButtonClick(2)}>
-                        <div className="text-start">
-                            Diverse<br />specialties
-                        </div>
-                        <div className="pt-[10%] flex items-center w-full flex-row justify-between">
-                            <CiCirclePlus className="w-10 h-10" />
-                            <span className="mt-4">2</span>
-                        </div>
-                    </button>
-                    <button className={getButtonClasses(3)}
-                        onClick={() => handleButtonClick(3)}>
-                        <div className="text-start">
-                            100+<br />Doctors
-                        </div>
-                        <div className="pt-[10%] flex items-center w-full flex-row justify-between">
-                            <CiCirclePlus className="w-10 h-10" />
-                            <span className="mt-4">3</span>
-                        </div>
-                    </button>
-                </div> */}
                 
             </div>
             <div className=" xl:pl-20 xl:pr-20 pt-16  pb-16 pl-10 pr-8 flex items-center justify-between">

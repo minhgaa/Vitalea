@@ -11,6 +11,7 @@ import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState(null)
@@ -75,7 +76,7 @@ export default function AccountMenu() {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleClose}>
-          <Avatar /> Trang của tôi
+          <Link className='flex items-center' to ='/user/order'><Avatar /> Trang của tôi</Link>
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>

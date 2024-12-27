@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from "react-router-dom"
 import axiosInstance from '../config/api';
-import Joi from 'joi'
+import Joi, { exist } from 'joi'
 import Spinner from '../custom/spinner';
 
 const userSchema = Joi.object({
@@ -75,6 +75,7 @@ const Signup = () => {
     const [phoneNumber, setPhoneNumber] = useState('')
     const [errors, setErrors] = useState({});
     const [loading ,setLoading] = useState(false)
+    const [existError, setExistError] = useState('')
     const navigate = useNavigate()
     const openPopup = () => {
         setIsPopupOpen(true);
@@ -104,9 +105,25 @@ const Signup = () => {
             setErrors(newErrors);
             setLoading(false)
         } else {
-            setErrors({})
-            const response = await axiosInstance.post('/auth/register', data)
-            if(response.data)  navigate('/login') 
+            try {
+                setErrors({})
+                const response = await axiosInstance.post('/auth/register', data)
+                if(response.status === 201) {
+                    navigate("/login")
+                    window.location.reload()
+                }
+            } catch(error) {
+                if (error.status === 303) setExistError('Tài khoản đã tồn tại, vui lòng thử lại !!!')
+                setLoading(false)
+                setFirstName("")
+                setLastName("")
+                setEmail("")
+                setPassword("")
+                setGender("")
+                setAddress("")
+                setPhoneNumber("")
+
+            }
         }
     }
 
@@ -196,6 +213,9 @@ const Signup = () => {
                                             </label>
                                         </div>
                                         <form onSubmit={handleSubmit} className='grid grid-cols-1 max-w-md'>
+                                            <div className='col-span-2 my-4'>
+                                                {existError && <p className='text-red-500 text-[18px] font-bold'>{existError}</p>}
+                                            </div>
                                             <div className='flex justify-between gap-6 w-full'>
                                                 <div className='flex flex-col w-full'>
                                                     <label className="font-poppin font-bold text-xs">First name</label>

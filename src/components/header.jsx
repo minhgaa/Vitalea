@@ -1,8 +1,10 @@
 import {Link} from 'react-router-dom'
 import { useAuthContext } from '../context/AuthContext';
 import AccountMenu from './avatar';
+import { Button } from '@mui/material';
 const Header = () => {
     const {authUser} = useAuthContext()
+    console.log(authUser)
     return (
         <header className='w-full'>
             <div className=" p-4 w-full flex items-center justify-between">
@@ -15,7 +17,7 @@ const Header = () => {
                     <li className={`list-none p-2 text-[12px] text-white font-bold `}><Link to='/doctors'>DANH SÁCH BÁC SĨ</Link></li>
                 </ul>}
                 <div className="flex items-center pr-7">
-                    <AccountMenu/>
+                    {!authUser ? <Link to='/login'><Button variant="contained">Login</Button></Link> : <AccountMenu/>}
                 </div>
             </div>
         </header>

@@ -62,6 +62,7 @@ const DoctorModal = ({activeDoctor = {}, handleToggle, setDoctors}) => {
                 })
             }
             handleToggle()
+            window.location.reload()
         } catch (err){
             console.log(err)
         }
