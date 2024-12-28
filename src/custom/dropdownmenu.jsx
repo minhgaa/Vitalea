@@ -15,10 +15,10 @@ const Dropdownmenu = ({ data, setSelectMonth, setSelectType }) => {
     };
 
     return (
-        <Menu as="div" className="relative inline-block text-left">
+        <Menu as="div" className=" relative inline-block text-left">
             <div>
                 <MenuButton
-                    className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    className="inline-flex w-full pt-[2px] pb-[2px] px-1 justify-center gap-x-1.5 rounded-md bg-white text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                     onClick={() => setIsOpen(!isOpen)}
                 >
                     {label}

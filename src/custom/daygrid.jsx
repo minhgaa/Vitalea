@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Dropdownmenu from './dropdownmenu';
 import axiosInstance from '../config/api';
 
-const DayGrid = ({setDate, setAppointments, doctorId}) => {
+const DayGrid = ({ setDate, setAppointments, doctorId }) => {
     const [startDate, setStartDate] = useState(new Date().getDate());
     const [daysToShow, setDaysToShow] = useState(15);
     const [selectedDay, setSelectedDay] = useState(null);
@@ -27,16 +27,16 @@ const DayGrid = ({setDate, setAppointments, doctorId}) => {
             "doctorId": doctorId,
             "status": "Accept",
             "date": `${day.getDate()}/${selectMonth}/2024`
-        }) 
-        if(response.status === 200) setAppointments(response.data)
+        })
+        if (response.status === 200) setAppointments(response.data)
     };
 
     const getDaysToShow = () => {
-        if (window.innerWidth < 640) return 6;  
-        if (window.innerWidth < 768) return 8;  
+        if (window.innerWidth < 640) return 6;
+        if (window.innerWidth < 768) return 8;
         if (window.innerWidth < 1024) return 10;
         if (window.innerWidth < 1300) return 14;
-        return 18; 
+        return 18;
     };
 
     const months = [
@@ -63,33 +63,36 @@ const DayGrid = ({setDate, setAppointments, doctorId}) => {
     }, [dayArray, selectedDay]);
 
     return (
-        <div className="flex justify-start pt-3 pl-4">
-            <div className="flex justify-center mb-4">
-                {dayArray.map((day, index) => (
-                    <div 
-                        key={index} 
-                        className={`m-1 w-8 h-8 flex justify-center items-center font-bold text-sm border border-gray-300 rounded-md cursor-pointer transition duration-200
-                            ${selectedDay === day.getDate() ? 'border border-blue-500 bg-violet-200' : 
-                            (day.getDate() === new Date().getDate() ? 'border border-blue-500 bg-yellow-200' : 'hover:bg-blue-100')}`} // Highlight today
-                        onClick={() => handleDayClick(day)} 
-                    >
-                        {day.getDate()}
-                    </div>
-                ))}
-            </div>
-            <button 
-                onClick={handleNext} 
-                className="ml-2 mb-4">
-                <img src="src/assets/next.svg" className='h-5 w-5' />
-            </button>
-            <div className=''>
-                <Dropdownmenu 
-                    data={months} 
+        <div className="justify-start grid grid-rows-5 h-20 w-full pt-3 pl-4">
+            <div className=' ml-auto row-span-2'>
+                <Dropdownmenu
+                    data={months}
                     selectedMonth={currentMonth + 1} // Add 1 here to show the correct month (1-12)
                     onMonthChange={setCurrentMonth} // Update the selected month when changed
                     setSelectMonth={setSelectMonth}
                 />
             </div>
+            <div className=' row-span-3 flex items-start'>
+                <div className="flex justify-center mb-4">
+                    {dayArray.map((day, index) => (
+                        <div
+                            key={index}
+                            className={`m-1 w-8 h-8 flex justify-center items-center font-bold text-sm border border-gray-300 rounded-md cursor-pointer transition duration-200
+                            ${selectedDay === day.getDate() ? 'border border-blue-500 bg-violet-200' :
+                                    (day.getDate() === new Date().getDate() ? 'border border-blue-500 bg-yellow-200' : 'hover:bg-blue-100')}`} // Highlight today
+                            onClick={() => handleDayClick(day)}
+                        >
+                            {day.getDate()}
+                        </div>
+                    ))}
+                </div>
+                <button
+                    onClick={handleNext}
+                    className="ml-2 mb-4">
+                    <img src="src/assets/next.svg" className='h-5 w-5' />
+                </button>
+            </div>
+
         </div>
     );
 };

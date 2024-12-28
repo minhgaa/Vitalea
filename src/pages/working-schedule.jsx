@@ -16,7 +16,7 @@ const WorkingSchedule = () => {
         { label: 'Dashboard', icon: "src/assets/das.svg", link: "/mainpage" },
         { label: 'Appointments', icon: "src/assets/app.svg", link: "/appoiments" },
         { label: 'Patients', icon: "src/assets/pat.svg", link: "/patients" },
-        { label: 'Blogs', icon: "src/assets/pat.svg", link: "/blogs" },
+        { label: 'Blogs', icon: "src/assets/blog.png", link: "/blogs" },
         { label: 'Messages', icon: "src/assets/mes.svg", link: "/messages" },
         { label: 'Working Schedule', icon: "src/assets/repb.svg", active: true, link: "/working-schedule" },
         { label: 'Settings', icon: "src/assets/set.svg", link: "/settings" },

@@ -8,7 +8,7 @@ import { FaArrowCircleRight } from "react-icons/fa";
 import Doctorlist from "../components/doctorcard";
 import { useState } from "react";
 import { useAuthContext } from '../context/AuthContext';
-import Header from "../components/header";
+import Header1 from "../components/header1";
 
 const Landing = () => {
     const [zoomIndex, setZoomIndex] = useState(0);
@@ -17,7 +17,11 @@ const Landing = () => {
         { src: "src/assets/internal.png", label: "Internal medicine" },
         { src: "src/assets/obste.png", label: "Obstetrics & gynecology" },
         { src: "src/assets/pedia.png", label: "Pediatrics" },
-        { src: "src/assets/internal.png", label: "Internal medicine" },
+        { src: "src/assets/Dermatology.jpg", label: "Dermatology" },
+        { src: "src/assets/Cardiology.jpg", label: "Cardiology" },
+        { src: "src/assets/Oncology.jpg", label: "Oncology" },
+        { src: "src/assets/Rehabilitation.jpg", label: "Rehabilitation" },
+
     ];
 
     const handleNextZoom = () => {
@@ -45,9 +49,9 @@ const Landing = () => {
         navigate(`/doctors/search/?q=${symptom}`)
     }
     return (
-        <div className="pl-5 pr-5 xl:pl-20 xl:pr-20 w-screen h-screen bg-customBlue1 overflow-x-hidden">
+        <div className="pl-5 pr-5 xl:pl-20 xl:pr-20 w-full h-full bg-customBlue1 overflow-x-hidden">
             <div className="flex h-[9%] items-center justify-between">
-                <Header/>
+                <Header1/>
             </div>
             <div className="w-full flex flex-col items-center pt-10 h-[90%] pb-10 pr-20 pl-20 rounded-2xl bg-white">
                 <img src="src/assets/bg.svg"
@@ -73,7 +77,7 @@ const Landing = () => {
             <div className="p-14 flex flex-col bg-white h-[95%] text-customBlue1 rounded-2xl w-full">
                 <span className="mb-4 text-7xl">Variety of specialties</span>
                 <span className="text-3xl">Every Specialty, A Step Towards Excellence.</span>
-                <div className="mt-10 h-[700px] w-[100%] overflow-x-scroll xl:text-customBlue1 text-white font-cabin text-xl">
+                <div className="mt-10 h-[700px] w-[100%] overflow-x-scroll overflow-y-hidden xl:text-customBlue1 text-white font-cabin text-xl">
                     <div className="w-[2000px] h-full flex space-x-8">
                         {images.map((image, index) => (
                             <div
@@ -81,7 +85,7 @@ const Landing = () => {
                                 className={`relative transition-transform duration-500 ${index === zoomIndex ? 'scale-110' : 'scale-100'
                                     }`}
                             >
-                                <img src={image.src} alt={image.label} className="max-h-[350px]" />
+                                <img src={image.src} alt={image.label} className="h-[300px] rounded-2xl w-[250px]" />
                                 <h3 className="pl-6  absolute xl:mt-[-10%] bottom-[8%]">{image.label}</h3>
                             </div>
                         ))}
@@ -93,9 +97,9 @@ const Landing = () => {
                     </button>
                 </div>
             </div>
-            <div className="h-[75%] p-20 pt-20 flex flex-col items-center ">
+            <div className="h-[700px]   p-20 flex flex-col items-center ">
                 <span className="font-cabin text-4xl text-white">Our 100+ doctors with extensive experience.</span>
-                <div className="w-full overflow-x-scroll overflow-y-hidden">
+                <div className="w-full overflow-x-scroll h-full">
                     <Doctorlist />
                 </div>
             </div>

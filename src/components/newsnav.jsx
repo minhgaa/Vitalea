@@ -1,12 +1,8 @@
-import Header from "./header"
 
 const NewsNav = () => {
     return (
-        <div>
-            <div>
-                <Header/>
-            </div>
-            <div className="relative flex justify-between text-[18px] my-6">
+        <div className="border-b w-full h-10 mb-3 px-32 shadow-md ">
+            <div className="relative flex justify-between text-[15px] my-4 ">
                 <ul className="hover:text-customBlue list_hover cursor-pointer">
                     Tra cứu bệnh
                     <div className='invisible opacity-0 duration-150 p-4 flex w-full absolute top-[32px] left-0 border rounded-md bg-white z-[99]' >

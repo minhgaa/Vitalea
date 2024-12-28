@@ -7,13 +7,13 @@ import axiosInstance from '../config/api';
 import { useAuthContext } from '../context/AuthContext';
 import { ToastContainer, toast } from "react-toastify";
 const Mainpage = () => {
-    const {authUser} = useAuthContext()
+    const { authUser } = useAuthContext()
     const [upcomingRequests, setUpcomingRequests] = useState([])
     const [appointments, setAppointments] = useState([])
     const [date, setDate] = useState("")
     const notify = (message) => {
         toast.success(message); // This will show the success toast
-      };
+    };
 
     const getUpcomingRequests = useCallback(async () => {
         const response = await axiosInstance.post('/appointment/getappointments', {
@@ -39,7 +39,7 @@ const Mainpage = () => {
 
 
 
-    
+
     const handleApprove = async (id, status) => {
         const response = await axiosInstance.patch('/appointment/update', {
             appointmentId: id,
@@ -49,7 +49,7 @@ const Mainpage = () => {
             notify("Xác nhận thành công")
             window.location.reload()
         }
-        
+
     };
 
     const handleReject = async (id, status) => {
@@ -74,7 +74,6 @@ const Mainpage = () => {
     ];
     return (
         <div className="w-screen h-screen">
-            {/* Header */}
             <div className='w-full h-[7.5%] flex items-center border-b border-gray-300'>
                 <Header />
             </div>
@@ -110,20 +109,19 @@ const Mainpage = () => {
                                 <CustomBarChart data={data} />
                             </div> */}
                             <img className='rounded-full w-[150px] h-[150px]' src='/public/pictures_healthcare/Chanthuongchinhhinh.webp' />
-                            <h3 className='font-bold text-lg'>Chào mừng trở lại, Dr.Hoc Nguyen</h3>
+                            <h3 className='font-bold text-lg'>Welcome back, Dr.Hoc Nguyen</h3>
                         </div>
 
                     </div>
                     <div className='grid grid-cols-4 row-span-3'>
                         <div className='col-span-3 flex justify-center items-center'>
                             <div className='h-[96.5%] w-[93.5%] grid grid-rows-8 bg-white rounded-md'>
-                                <div className='row-span-2 pt-3 border-gray-300 border-b'>
+                                <div className='row-span-2 pt-2 pb-2 border-gray-300 border-b'>
                                     <label className='p-5 font-inter font-bold text-xs'> Upcoming appointment</label>
-                                    <DayGrid doctorId = {authUser.id} setAppointments={setAppointments} setDate = {setDate}/>
+                                    <DayGrid doctorId={authUser.id} setAppointments={setAppointments} setDate={setDate} />
                                 </div>
                                 <div className='w-full row-span-6 mt-3'>
                                     <label className='p-5 font-inter font-bold text-xs'> Schedule list</label>
-
                                     <div className="overflow-y-auto w-full flex justify-center max-h-64 xl:mt-5">
                                         <table className=" w-full bg-white">
                                             <thead>
@@ -148,7 +146,7 @@ const Mainpage = () => {
                         <div className='col-span-1 flex justify-start items-center'>
                             <div className='w-[90%] pt-3 h-[96.5%] rounded-md bg-white'>
                                 <label className='p-5  font-inter font-bold text-xs'> Appoint Request</label>
-                                
+
                                 <div className="overflow-y-auto max-h-[350px] mt-3 ">
                                     {upcomingRequests.length > 0 && upcomingRequests?.map((request, index) => (
                                         <div key={index} className='flex justify-center'>
@@ -156,8 +154,8 @@ const Mainpage = () => {
                                                 <div className="flex items-center">
                                                     <div className='w-10 h-10 rounded-full overflow-hidden'>
                                                         <img
-                                                        src={(request?.user?.account?.image !== 'none') || "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"}
-                                                        alt='user-avatar'
+                                                            src={(request?.user?.account?.image !== 'none') || "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"}
+                                                            alt='user-avatar'
                                                         />
                                                     </div>
                                                     <div className='w-[80%] pl-4'>
@@ -188,7 +186,7 @@ const Mainpage = () => {
                     </div>
                 </div>
             </div>
-            <ToastContainer position='top-right'/>
+            <ToastContainer position='top-right' />
         </div>
     );
 }

@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
+import { matchPath } from 'react-router-dom';
 import Landing from './pages/landing'
 import Login from './pages/loginpage'
 import Signup from './pages/signuppage'
@@ -32,14 +33,27 @@ import VideoChat from './pages/video-chat'
 import { useAuthContext } from './context/AuthContext'
 import Verification from './pages/verification'
 import UserConversation from './pages/user-conversation'
+import Header from './components/header'
+import { FooterWithSitemap } from './components/footer'
+import NewsNav from './components/newsnav'
 function App() {
-  const {authUser} = useAuthContext()
+  const { authUser } = useAuthContext()
   console.log(authUser)
+  const isFooterVisible = [
+    '/news', 
+    '/',
+  ].includes(window.location.pathname) || matchPath('/blog-detail/:id', window.location.pathname);
+  const isHeaderVisible = [
+    '/news', 
+  ].includes(window.location.pathname) || matchPath('/blog-detail/:id', window.location.pathname);
+  const isNewpage = ['/news'].includes(window.location.pathname);
   return (
     <UserContextProvider>
+      {isHeaderVisible && <Header/>}
+      {isNewpage && <NewsNav/>}
       <Routes>
         <Route path='/' element={
-          <Landing/>
+          <Landing />
         } />
         <Route path='/login' element={
           !authUser ? (
@@ -53,7 +67,7 @@ function App() {
         <Route path='/signup' element={<Signup />} />
         <Route path='/mainpage' element={
           <DoctorRoute user={authUser}>
-              <Mainpage/>
+            <Mainpage />
           </DoctorRoute>
         } />
         <Route path='/appointments' element={<Appointments />} />
@@ -64,43 +78,44 @@ function App() {
         <Route path='/personal' element={<Personal />} />
         <Route path='/doctor-profile/:id' element={<DoctorProfile />} />
         <Route path='/appointment/:id' element={
-          <ProtectedRoute user = {authUser}>
+          <ProtectedRoute user={authUser}>
             <Appointment />
           </ProtectedRoute>
         } />
         <Route path='/news' element={<News />} />
-        <Route path='/news-search' element={<NewsSearch/>} />
-        <Route path='/doctors' element={<Doctors/>} />
-        <Route path='/blog-editor' element={<BlogEditor/>} />
-        <Route path='/blog-detail/:id' element={<BlogDetail/>} />
-        <Route path='/working-schedule' element={<WorkingSchedule/>} />
-        <Route path='/user/order' element={<Order/>} />
-        <Route path='/user/profile' element={<Profile/>} />
-        <Route path='/user/settings' element={<ChangePassword/>} />
-        <Route path='/conversation/:id' element={<Conversation/>} />
-        <Route path='/user/conversation/:id' element={<UserConversation/>} />
-        <Route path='/user/messages' element={<UserMessages/>} />
-        <Route path='/blogs' element={<Blogs/>} />
-        <Route path='/doctors/search' element={<DoctorSearch/>} />
-        <Route path='/admin/doctors' element={<ManageDoctors/>} />
-        <Route path='/video-chat' element={<VideoChat/>} />
-        <Route path='/verification' element={<Verification/>} />
+        <Route path='/news-search' element={<NewsSearch />} />
+        <Route path='/doctors' element={<Doctors />} />
+        <Route path='/blog-editor' element={<BlogEditor />} />
+        <Route path='/blog-detail/:id' element={<BlogDetail />} />
+        <Route path='/working-schedule' element={<WorkingSchedule />} />
+        <Route path='/user/order' element={<Order />} />
+        <Route path='/user/profile' element={<Profile />} />
+        <Route path='/user/settings' element={<ChangePassword />} />
+        <Route path='/conversation/:id' element={<Conversation />} />
+        <Route path='/user/conversation/:id' element={<UserConversation />} />
+        <Route path='/user/messages' element={<UserMessages />} />
+        <Route path='/blogs' element={<Blogs />} />
+        <Route path='/doctors/search' element={<DoctorSearch />} />
+        <Route path='/admin/doctors' element={<ManageDoctors />} />
+        <Route path='/video-chat' element={<VideoChat />} />
+        <Route path='/verification' element={<Verification />} />
       </Routes>
+      {isFooterVisible && <FooterWithSitemap />}
     </UserContextProvider>
   )
 }
 
-const ProtectedRoute = ({user, children}) => {
-  if (!user){
-    return <Navigate to='/login'/>
+const ProtectedRoute = ({ user, children }) => {
+  if (!user) {
+    return <Navigate to='/login' />
   }
   return children
-} 
-const DoctorRoute = ({user, children}) => {
-  if (!user){
-    return <Navigate to='/login'/>
+}
+const DoctorRoute = ({ user, children }) => {
+  if (!user) {
+    return <Navigate to='/login' />
   }
   if (user.role === 'DOCTOR') return children
-  return <Navigate to ='/mainpage'/>
-} 
+  return <Navigate to='/user/profile' />
+}
 export default App

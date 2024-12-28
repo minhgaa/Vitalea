@@ -1,26 +1,14 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 import AccountMenu from './avatar';
 import { Button } from '@mui/material';
-import { matchPath } from 'react-router-dom';
 
-const Header = () => {
+const Header1 = () => {
     const { authUser } = useAuthContext();
-    const location = useLocation();
-
-    const whitePaths = [ '/news'];
-    const isBlogDetail = matchPath('/blog-detail/:id', location.pathname);
-    const textColor = whitePaths.includes(location.pathname) || isBlogDetail
-        ? 'text-white'
-        : 'text-[#737CF5]';
-    const bgColor = location.pathname === '/news' || isBlogDetail
-    ? 'bg-customBlue' : 'bg-white';
-
-  
     return (
-        <header className={`w-full h-[100%] ${bgColor} `}>
-            <div className="p-4 pt-2 w-full flex items-center  justify-between">
-                <Link to="/" className={`pl-7 font-sofadi text-xl ${textColor}`}>
+        <header className="w-full bg-customBlue1 ">
+            <div className="p-4 w-full flex items-center justify-between">
+                <Link to="/" className="pl-7 text-white font-sofadi text-xl ">
                     Vitaléa
                 </Link>
                 {authUser?.role === 'USER' && (
@@ -50,4 +38,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default Header1;

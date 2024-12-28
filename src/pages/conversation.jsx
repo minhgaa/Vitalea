@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import { useSocketContext } from "../context/SocketContext";
 import { useAuthContext } from "../context/AuthContext";
 import Spinner from "../custom/spinner";
+import { IoCall, IoVideocam, IoSearch,  } from "react-icons/io5";
+import { BiSolidSend } from "react-icons/bi";
 
 const Conversation = () => {
     const {id} = useParams()
@@ -232,13 +234,13 @@ const Conversation = () => {
               </div>
               <div className="flex gap-4">
                 <button>
-                  <img src="../src/assets/audio.svg" className="w-5 h-5"></img>
+                 <IoCall className="w-5 h-5"/>
                 </button>
                 <button>
-                  <img src="../src/assets/video.svg" className="w-5 h-5"></img>
+                  <IoVideocam className="w-5 h-5"/>
                 </button>
                 <button>
-                  <img src="../src/assets/search.svg" className="w-4 h-4"></img>
+                  <IoSearch className="w-5 h-5"/>
                 </button>
               </div>
             </div>
@@ -270,23 +272,23 @@ const Conversation = () => {
               ))}
               <div className="h-6" ref={divRef}></div>
             </div>
-            <div className="flex items-center border-t pt-4 border-gray-300">
-              <div className="flex gap-2 border-gray-300">
+            <div className="flex items-center justify-between border-t gap-3 h-16 p-2 border-gray-300">
+              <div className="flex gap-2 pl-2 border-gray-300">
                 <button>
-                  <img src="../src/assets/emoji.svg" className="w-5 h-5"></img>
+                  <img src="../src/assets/emoji.svg" className="w-7 h-7"></img>
                 </button>
                 <button>
                   <img
                     src="../src/assets/attachment.svg"
-                    className="w-5 h-5"></img>
+                    className="w-7 h-7"></img>
                 </button>
               </div>
-              <form onSubmit={e => handleMessage(e)} className="flex items-center w-full">
-                <div className="w-full border border-[#B3B3B3] rounded-md p-2 ">
+              <form onSubmit={e => handleMessage(e)} className="flex items-center justify-start w-[90%]">
+                <div className="w-[90%] border border-[#B3B3B3] rounded-md p-2">
                     <input value={message} onChange={e => setMessage(e.target.value)} className="w-full outline-none border-none" type="text" placeholder="Type your message..."/>
                 </div>
-                <button className="text-sm font-semibold rounded-md  px-6 py-2 ml-4 text-slate-50 bg-slate-950 hover:bg-slate-700">
-                    Send
+                <button className="text-sm font-semibold rounded-full w-10 h-10 flex justify-center items-center ml-2 text-slate-50 bg-slate-950 hover:bg-slate-700">
+                    <BiSolidSend className="w-7 h-7"/>
                 </button>
               </form>
             </div>
