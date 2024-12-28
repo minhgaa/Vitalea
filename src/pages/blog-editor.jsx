@@ -5,9 +5,14 @@ import 'react-quill/dist/quill.snow.css';
 import { IoArrowBackCircle } from "react-icons/io5";
 import { useAuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from "react-toastify";
+import Spinner from '../custom/spinner';
+import NewsSelect from '../components/news-select';
+import { TextField } from '@mui/material';
 const BlogEditor = () => {
     const {authUser} = useAuthContext()
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
     const modules = {
         toolbar: [
                   [{ 'font': [] }],
@@ -19,6 +24,11 @@ const BlogEditor = () => {
                   ['clean'], ['link', 'image']
                 ]
     }
+    const notifySuccess = () => {
+        toast.success("Thêm bài viết mới thành công");
+    };
+
+
     const formats = [
                 'font',
                 'size',
@@ -30,14 +40,19 @@ const BlogEditor = () => {
     const [content, setContent] = useState('')
     const [title, setTitle] = useState('')
     const [files, setFiles] = useState('')
+    const [category, setCategory] = useState('');
+    const [subCategory, setSubCategory] = useState('');
     const handleSubmit = async (e) => {
+        notifySuccess()
         const data = new FormData()
         data.append('title', title)
         data.append('content', content)
         data.append('doctorId', authUser.id)
+        data.append('category', category)
+        data.append('subCategory', subCategory)
         data.append('file', files[0])
         e.preventDefault()
-        console.log(title, files, content)
+        setLoading(true)
         await axios({
             method: 'POST',
             url: 'http://localhost:3000/api/blog',
@@ -48,14 +63,27 @@ const BlogEditor = () => {
     }
     return (
         <>
-            <div className="w-[1200px] mx-auto p-4">
+            {loading ? <div className='h-screen w-screen fixed top-0 left-0'>
+                <Spinner/>
+            </div> : <div>
+                <div className="w-[1200px] mx-auto p-4">
                 <div className='flex items-center'>
                     <a href ='/mainpage' className='text-[36px] mr-4 opacity-50 hover:opacity-100 duration-150'><IoArrowBackCircle/></a>
                     <h1>Blog Editor</h1>
                 </div>
                 <form onSubmit={e => handleSubmit(e)}>
                     <div className='my-4 p-2 rounded-md border border-[#B3B3B3]'>
-                        <input className='w-full outline-none border-none' type='text' value={title} onChange={e => setTitle(e.target.value)} placeholder='Title' />
+                        <NewsSelect category = {category} subCategory = {subCategory} setCategory = {setCategory} setSubCategory = {setSubCategory}/>
+                    </div>
+                    <div className='my-4 p-2 rounded-md border border-[#B3B3B3]'>
+                    <TextField
+                        fullWidth
+                        margin="normal"
+                        label="Title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        variant="outlined"
+                    />
                     </div>
                     <div className='my-4 p-2 rounded-md border border-[#B3B3B3]'>
                         <p>Thumbnail:</p>
@@ -66,6 +94,7 @@ const BlogEditor = () => {
                     <button className='mt-2 px-6 py-2 rounded-md bg-customBlue font-bold text-white' type='submit'>Submit</button>
                 </form>
             </div>
+            <ToastContainer position="top-right" /></div>}
         </>
     )
 }

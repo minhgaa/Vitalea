@@ -5,14 +5,23 @@ import { IoMdAdd } from "react-icons/io";
 import { useCallback, useEffect, useState } from 'react';
 import axiosInstance from '../config/api';
 import { useAuthContext } from '../context/AuthContext';
+import Spinner from '../custom/spinner';
 const Blogs = () => {
     const [blogs, setBlogs] = useState([])
     const {authUser} = useAuthContext()
+    const [loading, setLoading] = useState(false)
     const getBlogs = useCallback(async () => {
-        const response = await axiosInstance.post('/blog/getblog', {
-            doctorId: authUser.id
-        })
-        setBlogs(response.data)
+        setLoading(true)
+        try {
+            const response = await axiosInstance.post('/blog/getblog', {
+                doctorId: authUser.id
+            })
+            setBlogs(response.data)
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
     }, [authUser.id])
 
     useEffect(() => {
@@ -33,7 +42,10 @@ const Blogs = () => {
 
         <div className="w-screen h-screen">
             {/* Header */}
-            <div className='w-full h-[7.5%] flex items-center border-b border-gray-300'>
+            {loading ? <div className='w-screen h-screen fixed top-0 left-0'>
+                <Spinner/>
+            </div> : <>
+                <div className='w-full h-[7.5%] flex items-center border-b border-gray-300'>
                 <Header />
             </div>
             <div className='grid grid-cols-6 h-[92.5%]'>
@@ -68,7 +80,7 @@ const Blogs = () => {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div></>}
         </div>
     )
 }
