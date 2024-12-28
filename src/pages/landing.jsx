@@ -82,7 +82,7 @@ const Landing = () => {
                                     }`}
                             >
                                 <img src={image.src} alt={image.label} className="max-h-[350px]" />
-                                <span className="pl-6 absolute xl:mt-[-10%] bottom-[8%]">{image.label}</span>
+                                <h3 className="pl-6  absolute xl:mt-[-10%] bottom-[8%]">{image.label}</h3>
                             </div>
                         ))}
                     </div>

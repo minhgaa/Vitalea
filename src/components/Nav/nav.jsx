@@ -10,13 +10,13 @@ const NavItemsContainer = ({ items }) => (
 		))}
 	</>
 )
-const 	Nav = ({ items}) => {
+const Nav = ({ items }) => {
 	return (
-    <nav className='w-[100%] h-auto flex justify-start items-center'>
-      <ul className="lg:ml-5 mt-5  ">
-					<NavItemsContainer items={items} />
-				</ul>
-    </nav>
+		<nav className='w-[100%] h-auto flex justify-center items-center'>
+			<ul className="  ">
+				<NavItemsContainer items={items} />
+			</ul>
+		</nav>
 	)
 }
 export default Nav

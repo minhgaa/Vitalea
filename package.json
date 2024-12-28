@@ -15,7 +15,7 @@
     "@fontsource/roboto": "^5.1.0",
     "@headlessui/react": "^2.1.9",
     "@headlessui/tailwindcss": "^0.2.1",
-    "@mui/icons-material": "^6.1.10",
+    "@mui/icons-material": "^6.3.0",
     "@mui/material": "^6.1.10",
     "@types/react-icons": "^3.0.0",
     "axios": "^1.7.7",

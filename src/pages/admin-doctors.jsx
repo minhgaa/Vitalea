@@ -3,6 +3,7 @@ import Nav from "../components/Nav/nav"
 import DoctorModal from "../custom/doctor-modal"
 import { useCallback, useEffect, useState } from "react"
 import axiosInstance from "../config/api"
+import { MdOutlineManageAccounts } from "react-icons/md";
 const ManageDoctors = () => {
     const [open, setOpen] = useState(false)
     const [doctors, setDoctors] = useState([])
@@ -32,7 +33,7 @@ const ManageDoctors = () => {
         getDoctors()
     }, [getDoctors])
     const item = [
-        { label: 'Quản lí bác sĩ', icon: "../src/assets/app.svg", active: true,  link: "/admin/doctors" },
+        { label: 'Quản lí bác sĩ', icon: "src/assets/manageb.png", active: true,  link: "/admin/doctors" },
     ]
     return (
 
