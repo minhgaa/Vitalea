@@ -8,7 +8,7 @@ const Header = () => {
     return (
         <header className='w-full'>
             <div className=" p-4 w-full flex items-center justify-between">
-                <Link to='/' className="pl-7 font-sofadi text-xl text-white">
+                <Link to='/' className="pl-7 font-sofadi text-xl text-[#737CF5]">
                     Vitaléa
                 </Link>
                 {authUser?.role === 'USER' && <ul className='flex'>

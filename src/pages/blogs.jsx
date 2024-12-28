@@ -29,15 +29,15 @@ const Blogs = () => {
     }, [getBlogs])
 
     const item = [
-        { label: 'Dashboard', icon: "src/assets/dasb.svg", link: "/mainpage" },
+        { label: 'Dashboard', icon: "src/assets/das.svg", link: "/mainpage" },
         { label: 'Appointments', icon: "src/assets/app.svg", link: "/appointments" },
-        { label: 'Patients', icon: "src/assets/pat.svg",  link: "/patients" },
-        { label: 'Blogs', icon: "src/assets/pat.svg", active:true, link: "/blogs" },
+        { label: 'Patients', icon: "src/assets/pat.svg", link: "/patients" },
+        { label: 'Blogs', icon: "src/assets/blogb.png", active: true, link: "/blogs" },
         { label: 'Messages', icon: "src/assets/mes.svg", link: "/messages" },
         { label: 'Working Schedule', icon: "src/assets/rep.svg", link: "/working-schedule" },
         { label: 'Settings', icon: "src/assets/set.svg", link: "/settings" },
     ];
-    
+
     return (
 
         <div className="w-screen h-screen">
@@ -54,8 +54,8 @@ const Blogs = () => {
                 </div>
                 <div className='p-4 col-span-5'>
                     <Link to='/blog-editor' className='opacity-60 hover:opacity-100 duration-150 w-fit ml-auto flex items-center my-4 px-4 py-2 rounded-md bg-customBlue'>
-                        <p className= 'text-white font-bold'>Tạo bài viết mới</p>
-                        <IoMdAdd className='text-white text-[18px] ml-2'/>
+                        <p className='text-white font-bold'>Tạo bài viết mới</p>
+                        <IoMdAdd className='text-white text-[18px] ml-2' />
                     </Link>
                     <table className="h-fit min-w-[98.5%] bg-white">
                         <thead>
@@ -67,16 +67,16 @@ const Blogs = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {blogs.map((blog,index) => {
-                                return (
-                                    <tr key={index} className="border-b h-14 text-xs hover:bg-gray-100 transition duration-200">
-                                        <td className="py-2 px-4 text-start">{index + 1}</td>
-                                        <td className="py-2 px-4 text-start">{blog.title}</td>
-                                        <td className="py-2 px-4 text-start">{blog.totalView}</td>
-                                        <td className="py-2 px-4 text-start"><Link to={blog.link + blog.id}>Link</Link></td>
-                                    </tr>
-                                )
-                            })}
+                            {Array.isArray(blogs) && blogs.map((blog, index) => (
+                                <tr key={index} className="border-b h-14 text-xs hover:bg-gray-100 transition duration-200">
+                                    <td className="py-2 px-4 text-start">{index + 1}</td>
+                                    <td className="py-2 px-4 text-start">{blog.title}</td>
+                                    <td className="py-2 px-4 text-start">{blog.totalView}</td>
+                                    <td className="py-2 px-4 text-start">
+                                        <Link to={blog.link + blog.id}>Link</Link>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>

@@ -14,10 +14,10 @@ const Patients = () => {
         { "id": "checkbox3", "label": "Another checkbox", "checked": false },
     ]
     const item = [
-        { label: 'Dashboard', icon: "src/assets/dasb.svg", link: "/mainpage" },
+        { label: 'Dashboard', icon: "src/assets/das.svg", link: "/mainpage" },
         { label: 'Appointments', icon: "src/assets/app.svg", link: "/appointments" },
-        { label: 'Patients', icon: "src/assets/pat.svg", active:true, link: "/patients" },
-        { label: 'Blogs', icon: "src/assets/pat.svg", link: "/blogs" },
+        { label: 'Patients', icon: "src/assets/patb.svg", active:true, link: "/patients" },
+        { label: 'Blogs', icon: "src/assets/blog.png", link: "/blogs" },
         { label: 'Messages', icon: "src/assets/mes.svg", link: "/messages" },
         { label: 'Working Schedule', icon: "src/assets/rep.svg", link: "/working-schedule" },
         { label: 'Settings', icon: "src/assets/set.svg", link: "/settings" },

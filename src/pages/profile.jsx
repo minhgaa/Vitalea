@@ -42,11 +42,11 @@ const Profile = () => {
                 <Header />
                 
             </div>
-            <div className='flex h-[92.5%]'>
+            <div className='grid grid-cols-6 h-[92.5%]'>
                 <div className='border-r border-gray-300 col-span-1 flex justify-center items-start'>
                     <Nav items={item} />
                 </div>
-                <div className="p-8 bg-[#F3F4F6] w-full">
+                <div className="p-8 col-span-5 bg-[#F3F4F6] w-full">
                     <h1 className="text-[32px] font-bold">Hồ sơ cá nhân</h1>
                     <div className="w-2/4 mx-auto bg-white rounded-md h-[70vh] p-4 overflow-y-scroll">
                         <div className="flex flex-col items-center">

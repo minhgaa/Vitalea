@@ -7,7 +7,7 @@ const NavItem = ({ item }) => {
 			<Link to={`${link}`} className="mt-10 h-[37px] sm:w-[60px] md:w-[180px] rounded-md bg-white flex sm:justify-center md:justify-start items-center">
 				<img src={icon}
 					className="ml-5 w-[20px] h-[20px] mr-3" />
-				<label className="hidden md:block font-inter text-sm">
+				<label className="hidden md:block font-inter text-base">
 					{label}
 				</label>
 			</Link>

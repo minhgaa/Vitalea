@@ -65,9 +65,9 @@ const Mainpage = () => {
 
     const item = [
         { label: 'Dashboard', icon: "src/assets/dasb.svg", active: true, link: "/mainpage" },
-        { label: 'Appointments', icon: "src/assets/app.svg", link: "/appointments" },
+        { label: 'Appointments', icon: "src/assets/app.svg", link: "/appoiments" },
         { label: 'Patients', icon: "src/assets/pat.svg", link: "/patients" },
-        { label: 'Blogs', icon: "src/assets/pat.svg", link: "/blogs" },
+        { label: 'Blogs', icon: "src/assets/blog.png", link: "/blogs" },
         { label: 'Messages', icon: "src/assets/mes.svg", link: "/messages" },
         { label: 'Working Schedule', icon: "src/assets/rep.svg", link: "/working-schedule" },
         { label: 'Settings', icon: "src/assets/set.svg", link: "/settings" },
@@ -121,11 +121,11 @@ const Mainpage = () => {
                                     <label className='p-5 font-inter font-bold text-xs'> Upcoming appointment</label>
                                     <DayGrid doctorId = {authUser.id} setAppointments={setAppointments} setDate = {setDate}/>
                                 </div>
-                                <div className='row-span-6 mt-3'>
+                                <div className='w-full row-span-6 mt-3'>
                                     <label className='p-5 font-inter font-bold text-xs'> Schedule list</label>
 
-                                    <div className="overflow-y-auto flex justify-center max-h-64 xl:mt-5">
-                                        <table className="pl- min-w-[98.5%] min-h-full bg-white">
+                                    <div className="overflow-y-auto w-full flex justify-center max-h-64 xl:mt-5">
+                                        <table className=" w-full bg-white">
                                             <thead>
                                                 <tr className="text-xs">
                                                     <th className="py-2 px-4 text-start">Name</th>

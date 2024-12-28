@@ -82,7 +82,7 @@ const DayGrid = ({setDate, setAppointments, doctorId}) => {
                 className="ml-2 mb-4">
                 <img src="src/assets/next.svg" className='h-5 w-5' />
             </button>
-            <div className='ml-3'>
+            <div className=''>
                 <Dropdownmenu 
                     data={months} 
                     selectedMonth={currentMonth + 1} // Add 1 here to show the correct month (1-12)

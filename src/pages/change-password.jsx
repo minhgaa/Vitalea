@@ -15,13 +15,12 @@ const ChangePassword = () => {
         <div className="w-screen h-screen">
             <div className='w-full h-[7.5%] flex items-center border-b border-gray-300'>
                 <Header />
-                
             </div>
-            <div className='flex h-[92.5%]'>
+            <div className='grid grid-cols-6 h-[92.5%]'>
                 <div className='border-r border-gray-300 col-span-1 flex justify-center items-start'>
                     <Nav items={item} />
                 </div>
-                <div className="p-8 bg-[#F3F4F6] w-full">
+                <div className="p-8 col-span-5 bg-[#F3F4F6] w-full">
                     <h1 className="text-[32px] font-bold">Thay đổi mật khẩu</h1>
                     <div className="bg-white rounded-md p-4 w-1/4 mx-auto">
                         <form>

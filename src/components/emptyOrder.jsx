@@ -1,7 +1,6 @@
 const EmptyOrder = () => {
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-100 w-full">
-      {/* Image */}
+    <div className="flex flex-col items-center h-full justify-center bg-gray-100 w-full">
       <img
         src="/src/assets/no-appointment.png" // Use an actual image URL
         alt="Empty Cart"
