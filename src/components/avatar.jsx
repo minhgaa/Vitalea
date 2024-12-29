@@ -1,14 +1,16 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
+import React, { useState } from 'react';
+import {
+  Box,
+  Avatar,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  Divider,
+  IconButton,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function AccountMenu() {
@@ -29,14 +31,15 @@ export default function AccountMenu() {
     localStorage.removeItem('user');
     localStorage.removeItem('doctor');
 
-    // Chuyển hướng về trang đăng nhập
+    // Đóng menu và chuyển hướng
+    handleClose();
     navigate('/login');
   };
 
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        <Tooltip title="Account settings">
+        <Tooltip title="Cài đặt tài khoản">
           <IconButton
             onClick={handleClick}
             size="small"
@@ -54,9 +57,9 @@ export default function AccountMenu() {
         id="account-menu"
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
+        disableScrollLock // Ngăn scroll xuất hiện
         PaperProps={{
-          elevation: 0,
+          elevation: 4,
           sx: {
             overflow: 'visible',
             filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
@@ -85,9 +88,17 @@ export default function AccountMenu() {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleClose}>
-          <Link className="flex items-center gap-2" to="/user/order">
-            <Avatar /> 
-            <span>Trang của tôi</span>
+          <Link
+            to="/user/order"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              textDecoration: 'none',
+              color: 'inherit',
+            }}
+          >
+            <Avatar />
+            <Typography sx={{ ml: 1 }}>Trang của tôi</Typography>
           </Link>
         </MenuItem>
         <Divider />
@@ -95,7 +106,7 @@ export default function AccountMenu() {
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
           </ListItemIcon>
-          Đăng xuất
+          <Typography>Đăng xuất</Typography>
         </MenuItem>
       </Menu>
     </React.Fragment>

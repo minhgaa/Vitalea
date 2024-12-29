@@ -4,6 +4,9 @@ import axiosInstance from "../config/api"
 import { format } from "date-fns"
 import { Link } from "react-router-dom"
 import Spinner from "../custom/spinner"
+import NewsNav from "../components/newsnav"
+import Header from "../components/header1"
+import FooterWithSitemap from "../components/footer"
 const News = () => {
     const [loading, setLoading] = useState(false)
     const [news, setNews] = useState([])
@@ -22,15 +25,18 @@ const News = () => {
         getNews()
     }, [getNews])
     return (
-        <div className=" w-[1200px] mx-auto">
-            {loading ? <div className="h-screen w-screen fixed top-0 left-0">
-                <Spinner />
-            </div> : <>
+        <>
+        {loading ? <div className="w-screen h-screen">
+            <Spinner/>
+        </div> : <>
+        <div className="w-[1400px] mx-auto">
+            <Header/>
+            <NewsNav/><>
                 <div className="flex flex-col items-center justify-center ">
-                    <div className="flex">
+                    <div className="flex w-full">
                         <div className="w-1/2 overflow-hidden rounded-md border border-[#B3B3B3]">
                             <div className="overflow-hidden">
-                                <img className="hover:scale-110 overflow-hidden duration-200 w-[100%] object-cover" src={news[0]?.thumbnail} />
+                                <img className="hover:scale-110 overflow-hidden duration-200 w-[100%] h-[200px] object-cover" src={news[0]?.thumbnail} />
                             </div>
                             <div className="">
                                 <div className="p-4 ">
@@ -97,12 +103,12 @@ const News = () => {
                                 <p></p>
                             )}
                     </div>
-                    <div className="mt-6">
+                    <div className="mt-6 w-full">
                         {Array.isArray(news) && news.length > 0 ?
-                            news.slice(3, 7).map((item, index) => {
+                            news.slice(7, 11).map((item, index) => {
                                 let content = item.content.replaceAll("<strong>", "");
                                 return (
-                                    <div key={index} className="mt-4 flex items-center justify-between w-2/3 overflow-hidden rounded-md border border-[#B3B3B3]">
+                                    <div key={index} className="w-2/3 mt-4 flex overflow-hidden rounded-md border border-[#B3B3B3]">
                                         <div className="w-2/3">
                                             <div className="p-4 ">
                                                 <p className="font-bold text-customBlue">TỬ CUNG</p>
@@ -132,8 +138,9 @@ const News = () => {
                 </div>
 
             </>
-            }
         </div>
+        <FooterWithSitemap/></>}
+        </>
     )
 }
 

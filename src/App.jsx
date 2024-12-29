@@ -33,24 +33,11 @@ import VideoChat from './pages/video-chat'
 import { useAuthContext } from './context/AuthContext'
 import Verification from './pages/verification'
 import UserConversation from './pages/user-conversation'
-import Header from './components/header'
-import { FooterWithSitemap } from './components/footer'
-import NewsNav from './components/newsnav'
 function App() {
   const { authUser } = useAuthContext()
   console.log(authUser)
-  const isFooterVisible = [
-    '/news', 
-    '/',
-  ].includes(window.location.pathname) || matchPath('/blog-detail/:id', window.location.pathname);
-  const isHeaderVisible = [
-    '/news', 
-  ].includes(window.location.pathname) || matchPath('/blog-detail/:id', window.location.pathname);
-  const isNewpage = ['/news'].includes(window.location.pathname);
   return (
     <UserContextProvider>
-      {isHeaderVisible && <Header/>}
-      {isNewpage && <NewsNav/>}
       <Routes>
         <Route path='/' element={
           <Landing />
@@ -83,7 +70,7 @@ function App() {
           </ProtectedRoute>
         } />
         <Route path='/news' element={<News />} />
-        <Route path='/news-search' element={<NewsSearch />} />
+        <Route path='/news-search/:category' element={<NewsSearch />} />
         <Route path='/doctors' element={<Doctors />} />
         <Route path='/blog-editor' element={<BlogEditor />} />
         <Route path='/blog-detail/:id' element={<BlogDetail />} />
@@ -100,7 +87,7 @@ function App() {
         <Route path='/video-chat' element={<VideoChat />} />
         <Route path='/verification' element={<Verification />} />
       </Routes>
-      {isFooterVisible && <FooterWithSitemap />}
+      {/* {isFooterVisible && <FooterWithSitemap />} */}
     </UserContextProvider>
   )
 }
