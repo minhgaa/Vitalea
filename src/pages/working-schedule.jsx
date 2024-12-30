@@ -10,8 +10,10 @@ import { useCallback, useEffect, useState } from "react";
 import axiosInstance from "../config/api";
 import { useAuthContext } from "../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
+import Spinner from "../custom/spinner";
 const WorkingSchedule = () => {
     const {authUser} = useAuthContext()
+    const [loading, setLoading] = useState(false)
     const item = [
         { label: 'Dashboard', icon: "src/assets/das.svg", link: "/mainpage" },
         { label: 'Appointments', icon: "src/assets/app.svg", link: "/appoiments" },
@@ -72,8 +74,15 @@ const WorkingSchedule = () => {
             return output
     }
     const getSchedule = useCallback(async () => {
-        const response = await axiosInstance.get(`/working-schedule/${authUser.id}`)
-        setSchedule(response.data)
+        setLoading(true)
+        try {
+            const response = await axiosInstance.get(`/working-schedule/${authUser.id}`)
+            setSchedule(response.data)
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setLoading(false)
+        }
     }, [authUser.id])
     useEffect(() => {
         getSchedule()
@@ -81,7 +90,10 @@ const WorkingSchedule = () => {
     const time = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
     return (
         <div className="w-screen h-screen">
-            <div className='w-full h-[7.5%] flex items-center border-b border-gray-300'>
+            {loading ? <div className="w-screen h-screen fixed top-0 left-0">
+                <Spinner/>
+            </div> : <>
+                <div className='w-full h-[7.5%] flex items-center border-b border-gray-300'>
                 <Header />
             </div>
             <div className='grid grid-cols-6 h-[92.5%]'>
@@ -91,7 +103,7 @@ const WorkingSchedule = () => {
                 <div className="p-4">
                     <h3 className="font-bold text-[32px]">Settings</h3>
                     <div className="mt-8 flex flex-wrap w-[1200px] justify-center">
-                        {schedule.map((item, index) => {
+                        {schedule.length > 0 && schedule.map((item, index) => {
                             return (
                                     <div key={index} className="ml-4 mt-4">
                                 <div className="w-[300px] border border-[#B3B3B3] rounded-md">
@@ -167,6 +179,7 @@ const WorkingSchedule = () => {
                 </div>
             </div>
             <ToastContainer position="top-right"/>
+            </>}
         </div>
     )
 }

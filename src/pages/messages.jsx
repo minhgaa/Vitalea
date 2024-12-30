@@ -168,6 +168,9 @@ const Messages = () => {
   return (
     <div className="w-screen h-screen">
       {/* Header */}
+      {loading ? <div className="w-screen h-screen fixed top-0 left-0">
+        <Spinner/>
+      </div> : <>
       <div className="w-full h-[7.5%] flex items-center border-b border-gray-300">
         <Header />
       </div>
@@ -176,9 +179,7 @@ const Messages = () => {
           <Nav items={item} />
         </div>
         <div className="col-span-5 grid grid-cols-4 p-4 bg-customBg">
-          {loading ? (<div className="h-screen w-screen fixed top-0 left-0">
-            <Spinner />
-          </div>) : allConversations.length > 0 ? (
+            {allConversations.length > 0 ? (
             <div className="col-span-1 bg-white rounded">
               <div className="flex justify-between p-4 border-b border-gray-300">
                 <p className="font-semibold">Messages</p>
@@ -225,7 +226,7 @@ const Messages = () => {
             </div>
           )}
         </div>
-      </div>
+      </div></>}
     </div>
   );
 };

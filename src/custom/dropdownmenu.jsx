@@ -2,16 +2,37 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { useState } from 'react';
+import axiosInstance from '../config/api';
+import getWeek from '../helpers/getWeek';
 
-const Dropdownmenu = ({ data, setSelectMonth, setSelectType }) => {
+const Dropdownmenu = ({ setLoading, setAppointments, data, setSelectMonth, setSelectType }) => {
     const [label, setLabel] = useState(data[0]); 
     const [isOpen, setIsOpen] = useState(false); 
    
-    const handleSelect = (item) => {
+    const handleSelect = async (item) => {
         setLabel(item);
         setIsOpen(false);
         if (setSelectMonth) setSelectMonth(item.split(" ")[1])
-        if (setSelectType) setSelectType(item)
+        if (setSelectType) {
+            setSelectType(item)
+            const week = getWeek(new Date())
+            try {
+                switch (item) {
+                    case 'This day': {
+                        break 
+                    }
+                    case 'This week': {
+                        const response = await axiosInstance.get(`/appointment/get/by-week?startDate=${week.start}&endDate=${week.end}`)
+                        setAppointments(response.data)
+                        break
+                    }
+                }
+            } catch (err) {
+                console.log(err)
+            } finally {
+                setLoading(false)
+            }
+        }
     };
 
     return (

@@ -65,7 +65,7 @@ const Mainpage = () => {
 
     const item = [
         { label: 'Dashboard', icon: "src/assets/dasb.svg", active: true, link: "/mainpage" },
-        { label: 'Appointments', icon: "src/assets/app.svg", link: "/appoiments" },
+        { label: 'Appointments', icon: "src/assets/app.svg", link: "/appointments" },
         { label: 'Patients', icon: "src/assets/pat.svg", link: "/patients" },
         { label: 'Blogs', icon: "src/assets/blog.png", link: "/blogs" },
         { label: 'Messages', icon: "src/assets/mes.svg", link: "/messages" },

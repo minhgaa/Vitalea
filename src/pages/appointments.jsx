@@ -5,11 +5,14 @@ import CounselingCard from '../custom/counsellingcart';
 import { useCallback, useEffect, useState } from 'react';
 import axiosInstance from '../config/api';
 import { useAuthContext } from '../context/AuthContext';
+import Spinner from '../custom/spinner';
+import NoAppointment from '../components/no-appointments';
 
 const Appoiments = () => {
     const {authUser} = useAuthContext()
     const [appointments, setAppointments] = useState([])
-    const [type, setSelectType] = useState('This day')
+    const [, setSelectType] = useState('This day')
+    const [loading, setLoading] = useState(false)
     const getAppointments = useCallback(async () => {
         const response = await axiosInstance.post('/appointment/getappointments', {
             "doctorId": authUser.id,
@@ -24,10 +27,10 @@ const Appoiments = () => {
     }, [getAppointments])
 
     const item = [
-        { label: 'Dashboard', icon: "src/assets/dasb.svg",  link: "/mainpage" },
-        { label: 'Appointments', icon: "src/assets/app.svg",active: true, link: "/appointments" },
+        { label: 'Dashboard', icon: "src/assets/das.svg",  link: "/mainpage" },
+        { label: 'Appointments', icon: "src/assets/appb.svg",active: true, link: "/appointments" },
         { label: 'Patients', icon: "src/assets/pat.svg", link: "/patients" },
-        { label: 'Blogs', icon: "src/assets/pat.svg", link: "/blogs" },
+        { label: 'Blogs', icon: "src/assets/blog.png", link: "/blogs" },
         { label: 'Messages', icon: "src/assets/mes.svg", link: "/messages" },
         { label: 'Working Schedule', icon: "src/assets/rep.svg", link: "/working-schedule" },
         { label: 'Settings', icon: "src/assets/set.svg", link: "/settings" },
@@ -35,56 +38,59 @@ const Appoiments = () => {
     const menuData = ['This day', 'This week', 'This month', 'This year'];
     const menuData1 = ['All'];
     return (
-
         <div className="w-screen h-screen">
             {/* Header */}
-            <div className='w-full h-[7.5%] flex items-center border-b border-gray-300'>
-                <Header />
-            </div>
-            <div className='grid grid-cols-6 h-[92.5%]'>
-                <div className='border-r border-gray-300 col-span-1 flex justify-center items-start'>
-                    <Nav items={item} />
+            {loading ? <div className='w-sreen h-screen fixed top-0 left-0'>
+                <Spinner/>
+            </div> : <>
+
+                <div className='w-full h-[7.5%] flex items-center border-b border-gray-300'>
+                    <Header />
                 </div>
-                <div className=' col-span-5 grid grid-rows-11 bg-customBg'>
-                    <div className=' row-span-1 flex justify-center items-center'>
-                        <div className='bg-white h-[90%] w-[96%] flex items-center justify-between rounded-md'>
-                            <label className=' m-4 font-bold '> Appointment</label>
-                            <div className=' flex flex-row space-x-2 mr-5'>
-                                <div className=''>
+
+                <div className='flex h-[92.5%] w-full'>
+                    <div className='border-r border-gray-300 w-1/6 flex justify-center items-start'>
+                        <Nav items={item} />
+                    </div>
+
+                    <div className='w-5/6 flex flex-col'>
+                        <div className='flex justify-end items-center bg-black h-[10%] w-full rounded-md'>
+                            <label className='m-4 font-bold '> Appointment</label>
+                            <div className='flex space-x-2 mr-5'>
+                                <div>
                                     <label className='mr-3 text-gray-400 text-sm'>Appointments</label>
-                                    <Dropdownmenu setSelectType = {setSelectType} data={menuData} />
+                                    <Dropdownmenu setLoading={setLoading} setAppointments={setAppointments} setSelectType={setSelectType} data={menuData} />
                                 </div>
-                                <div className=''>
+                                <div>
                                     <label className='mr-3 text-gray-400 text-sm'>Sort by</label>
                                     <Dropdownmenu data={menuData1} />
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className='row-span-10 grid grid-cols-5'>
-                        <div className='col-span-2 grid grid-rows-2'>
-                        </div>
-                        <div className='col-span-3 flex justify-start items-start'>
-                            <div className='bg-white h-[97.5%] rounded-md w-[96.5%] p-4'>
-                                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4'>
-                                    {appointments.map((appointment, index) => (
-                                        <CounselingCard
-                                            key={index}
-                                            date={appointment.workingShift.date }
-                                            time={appointment.workingShift.time}
-                                            sessionTitle={appointment.note}
-                                            profile={appointment.user}
-                                        />
-                                    ))}
+
+                        <div className='w-[90%] mx-auto flex-1'>
+                            <div className='flex justify-start items-start'>
+                                <div className='bg-white rounded-md w-full p-4'>
+                                    <div className='flex flex-wrap gap-4'>
+                                        {appointments.length > 0 ? appointments.map((appointment, index) => (
+                                            <CounselingCard
+                                                key={index}
+                                                date={appointment.workingShift.date }
+                                                time={appointment.workingShift.time}
+                                                sessionTitle={appointment.note}
+                                                profile={appointment.user}
+                                            />
+                                        )) : <NoAppointment/>}
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                     </div>
                 </div>
-            </div>
+            </>}
         </div>
     )
 }
 
-export default Appoiments
+export default Appoiments;
