@@ -27,13 +27,12 @@ export default function AccountMenu() {
   };
 
   const handleLogout = () => {
-    // Xóa thông tin người dùng khỏi localStorage
     localStorage.removeItem('user');
     localStorage.removeItem('doctor');
 
-    // Đóng menu và chuyển hướng
     handleClose();
     navigate('/login');
+    window.location.reload()
   };
 
   return (

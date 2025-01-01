@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
-import { matchPath } from 'react-router-dom';
 import Landing from './pages/landing'
 import Login from './pages/loginpage'
 import Signup from './pages/signuppage'
@@ -33,6 +32,7 @@ import VideoChat from './pages/video-chat'
 import { useAuthContext } from './context/AuthContext'
 import Verification from './pages/verification'
 import UserConversation from './pages/user-conversation'
+import DoctorSchedule from './components/doctor-schedule'
 function App() {
   const { authUser } = useAuthContext()
   console.log(authUser)
@@ -86,6 +86,7 @@ function App() {
         <Route path='/admin/doctors' element={<ManageDoctors />} />
         <Route path='/video-chat' element={<VideoChat />} />
         <Route path='/verification' element={<Verification />} />
+        <Route path='/doctor-info' element={<DoctorSchedule />} />
       </Routes>
       {/* {isFooterVisible && <FooterWithSitemap />} */}
     </UserContextProvider>

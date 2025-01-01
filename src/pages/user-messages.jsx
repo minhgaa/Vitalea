@@ -41,7 +41,9 @@ const UserMessages = () => {
   return (
     <div className="w-screen h-screen">
       {/* Header */}
-      <div className="w-full h-[7.5%] flex items-center border-b border-gray-300">
+      {loading ? <div className='h-screen w-screen fixed top-0 left-0'>
+        <Spinner/>
+      </div> : <><div className="w-full h-[7.5%] flex items-center border-b border-gray-300">
         <Header />
       </div>
       <div className="grid grid-cols-6 h-[92.5%]">
@@ -49,9 +51,7 @@ const UserMessages = () => {
           <Nav items={item} />
         </div>
         <div className="col-span-5 grid grid-cols-4 p-4 bg-customBg">
-        {loading ? (<div className="h-screen w-screen fixed top-0 left-0">
-                        <Spinner />
-                    </div>) : 
+        
           <div className="col-span-1 bg-white rounded">
             <div className="flex justify-between p-4 border-b border-gray-300">
               <p className="font-semibold">Messages</p>
@@ -83,9 +83,9 @@ const UserMessages = () => {
                               </Link>
                             ))}
             </div>
-          </div>}
+          </div>
         </div>
-      </div>
+      </div></>}
     </div>
   );
 }

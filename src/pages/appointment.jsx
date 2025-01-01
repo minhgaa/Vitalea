@@ -4,10 +4,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 import axiosInstance from "../config/api";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
+import Spinner from "../custom/spinner";
 const Appointment = () => {
+    const [loading, setLoading] = useState(false)
     const {id} = useParams()
     const fileRef = useRef(null)
     const [imgs, setImgs] = useState([])
@@ -18,6 +20,7 @@ const Appointment = () => {
     const dayOfWeek = currentDate.getDay();
     const offset = (dayOfWeek === 0) ? -6 : 1 - dayOfWeek; 
     const {authUser} = useAuthContext()
+    const navigate = useNavigate()
 
     const notifySuccess = () => {
         toast.success("Đặt lịch thành công !!!"); // This will show the success toast
@@ -31,18 +34,36 @@ const Appointment = () => {
     const [active, setActive] = useState({0: format(new Date(daysInWeek[0].date), "dd/MM/yyyy")})
     const [activeTime, setActiveTime] = useState(0)
     const handleFiles = (e) => {
+        if (e.target.files.length > 3) {
+            alert('Vui lòng chọn tối đa 3 hình ảnh')
+            return
+        }
         setImgs([...e.target.files])
     }
 
     const getSchedule = useCallback(async (day) => {
-        const response = await axiosInstance.get(`/working-schedule/${id}/${day}`)
-        setSchedule(response.data)
+        setLoading(true)
+        try {
+            const response = await axiosInstance.get(`/working-schedule/${id}/${day}`)
+            setSchedule(response.data)
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
     }, [id])
 
     const getDoctor = useCallback(async () => {
-        const response = await axiosInstance.get(`/doctor/${id}`)
-        setDoctor(response.data)
-        console.log(response.data)
+
+            setLoading(true)
+            try {
+                const response = await axiosInstance.get(`/doctor/${id}`)
+                setDoctor(response.data)
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setLoading(false)
+            }
     }, [id])
 
     useEffect(() => {
@@ -55,7 +76,7 @@ const Appointment = () => {
         getSchedule(day.day)        
     }
     let shifts = []
-    for (let i = parseInt(schedule.startTime); i < parseInt(schedule.endTime); i++){
+    for (let i = parseInt(schedule?.startTime); i < parseInt(schedule?.endTime); i++){
         shifts.push(i)
     }
     const handleSubmit = async (e) => {
@@ -73,16 +94,30 @@ const Appointment = () => {
         data.append('note', 123)
         data.append('doctorId', id)
         data.append('userId', authUser.id)
+        
+    try {
         await axios({
             method: 'POST',
             url: 'http://localhost:3000/api/appointment',
             data,
-            headers: {'Content-Type': 'multipart/form-data'}
-        })
-        notifySuccess()
+            headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            notifySuccess();
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setTimeout(() => {
+                navigate('/user/order');
+                window.location.reload();
+            }, 3000);
+        }
+        
     }
     return (
-        <div className="bg-[#F1F5F9] h-screen">
+        <div className="bg-[#F1F5F9] min-h-screen">
+            {loading ? <div className="h-screen w-screen fixed top-0 left-0">
+                <Spinner/>
+            </div> : <>
             <div className="w-[1200px] mx-auto flex">
                 <div className="w-1/2">
                     <div className="bg-white rounded-md p-6 w-full">
@@ -128,7 +163,7 @@ const Appointment = () => {
                             </textarea>
                         </div>
                         <div>
-                            <p className="my-4"><label htmlFor="note">Tệp tin đính kèm <span className="font-bold">[{imgs.length || 0} / 2]</span></label></p>
+                            <p className="my-4"><label htmlFor="note">Tệp tin đính kèm <span className="font-bold">[{imgs.length || 0} / 3]</span></label></p>
 
                             <div className="border border-dashed border-[#B3B3B3] p-2 rounded-md text-center cursor-pointer" onClick={() => fileRef.current.click()}>
                                 <p><span className="text-customBlue font-bold">Chọn tập tin</span> hoặc kéo thả vào đây</p>
@@ -175,7 +210,7 @@ const Appointment = () => {
                     <form onSubmit={e => handleSubmit(e)} className="mt-6 p-2 bg-customBlue text-center rounded-md text-white font-bold text-[18px] cursor-pointer"><button className="w-full" type="submit">Xác nhận</button></form>
                 </div>
             </div>
-            <ToastContainer position="top-right" />
+            <ToastContainer position="top-right" /></>}
         </div>
     )
 }

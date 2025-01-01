@@ -37,7 +37,7 @@ const Header = () => {
                 </Typography>
 
                 {/* Navigation Links */}
-                {authUser.role === 'USER' && <Box sx={{ display: 'flex', gap: 4 }}>
+                {authUser?.role === 'USER' && <Box sx={{ display: 'flex', gap: 4 }}>
                     <Button
                         component={Link}
                         to="/doctors"
