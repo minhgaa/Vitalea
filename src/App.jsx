@@ -34,6 +34,7 @@ import Verification from './pages/verification'
 import UserConversation from './pages/user-conversation'
 import DoctorSchedule from './components/doctor-schedule'
 import QRPayment from './pages/payment'
+import ManagePayments from './pages/admin-payment'
 function App() {
   const { authUser } = useAuthContext()
   console.log(authUser)
@@ -89,6 +90,7 @@ function App() {
         <Route path='/verification' element={<Verification />} />
         <Route path='/doctor-info' element={<DoctorSchedule />} />
         <Route path='/user/payment' element={<QRPayment />} />
+        <Route path='/admin/payment' element={<ManagePayments />} />
       </Routes>
       {/* {isFooterVisible && <FooterWithSitemap />} */}
     </UserContextProvider>

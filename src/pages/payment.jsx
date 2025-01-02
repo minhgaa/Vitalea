@@ -1,16 +1,19 @@
 import { useState } from "react";
-import Spinner from "../custom/spinner";
 import Header from "../components/header";
 import Nav from "../components/Nav/nav";
+import { useAuthContext } from "../context/AuthContext";
+import axios from "axios";
 
 function QRPayment() {
   const [amount, setAmount] = useState("");
   const [qrVisible, setQrVisible] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
-
+  const [file, setFile] = useState(null)
+  const {authUser} = useAuthContext()
   const handleUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
+      setFile(file)
       const reader = new FileReader();
       reader.onload = () => {
         setUploadedImage(reader.result);
@@ -19,7 +22,26 @@ function QRPayment() {
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async (e) => {
+    e.preventDefault()
+    const data = new FormData()
+    data.append('file', file)
+    data.append('amount', amount)
+    data.append('date', new Date().toISOString())
+    data.append('status', 'Chờ xác nhận' )
+    data.append('userId', authUser?.id)
+
+    try {
+         await axios({
+            method: 'POST',
+            url: 'http://localhost:3000/api/payment',
+            data,
+            headers: {'Content-Type': 'multipart/form-data'}
+        })
+
+    } catch (error) {
+        console.log(error)
+    }
     alert("Thanh toán đã được xác nhận!");
     setQrVisible(false);
     setAmount("");
