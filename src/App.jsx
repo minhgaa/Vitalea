@@ -33,6 +33,7 @@ import { useAuthContext } from './context/AuthContext'
 import Verification from './pages/verification'
 import UserConversation from './pages/user-conversation'
 import DoctorSchedule from './components/doctor-schedule'
+import QRPayment from './pages/payment'
 function App() {
   const { authUser } = useAuthContext()
   console.log(authUser)
@@ -87,6 +88,7 @@ function App() {
         <Route path='/video-chat' element={<VideoChat />} />
         <Route path='/verification' element={<Verification />} />
         <Route path='/doctor-info' element={<DoctorSchedule />} />
+        <Route path='/user/payment' element={<QRPayment />} />
       </Routes>
       {/* {isFooterVisible && <FooterWithSitemap />} */}
     </UserContextProvider>

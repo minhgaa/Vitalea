@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaCoins } from "react-icons/fa";
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -86,6 +87,19 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
+        <MenuItem onClick={handleClose}>
+          <Link
+            to="/user/order"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              textDecoration: 'none',
+              color: 'inherit',
+            }}
+          >
+            <Typography sx={{display: 'flex', alignItems: 'center'}}><FaCoins className='mr-4'/> 100 </Typography>
+          </Link>
+        </MenuItem>
         <MenuItem onClick={handleClose}>
           <Link
             to="/user/order"
