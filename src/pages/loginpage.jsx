@@ -68,23 +68,8 @@ const Login = () => {
                                 <div className=" h-auto w-[70%]">
                                     <div className=" h-full mb-10 w-[70%] flex justify-start items-end ">
                                         <label className="font-poppin text-customBlue font-bold text-2xl ">
-                                            Log in
+                                            Đăng nhập
                                         </label>
-                                    </div>
-                                    <button className="h-[50px] border-[0.5px] border-gray-500 flex justify-center items-center w-full rounded-full bg-white">
-                                        <img
-                                            src="src/assets/google.png"
-                                            className="w-6 mr-3 h-6"
-                                        />
-                                        <label className="text-black font-semibold text-xs font-poppin">
-                                            Log in with Google
-                                        </label>
-                                    </button>
-                                    <div className="mt-5 mb-5 relative flex justify-center items-center">
-                                        <label className="z-10 h-3 text-center w-[120px] bg-white text-black text-xs font-poppin">
-                                            Or log in with Email
-                                        </label>
-                                        <div className="absolute mt-1 h-[0.5px] w-full bg-gray-500" />
                                     </div>
                                     {errorMessage && <p className='font-bold text-red-500 text-[14px]'>{errorMessage}</p>}
                                     <form onSubmit={handleLogin}>
@@ -92,19 +77,20 @@ const Login = () => {
                                         <div className={`mt-3 mb-5 p-4 w-full rounded-lg bg-white border-[0.3px] ` + (error ? "border-red-500" : "border-gray-500")}>
                                             <input className={`outline-none border-none w-full ` + (error ? "placeholder-red-500" : "")} type='text' placeholder='Nhập email của bạn...' onChange={e => {setError(false); setEmail(e.target.value); setErrorMessage('')}} />
                                         </div>
-                                        <label className={`font-poppin font-bold text-xs ` + (error ? "text-red-500 font-bold" : "")}>Password</label>
+                                        <label className={`font-poppin font-bold text-xs ` + (error ? "text-red-500 font-bold" : "")}>Mật khẩu</label>
                                         <div className={`mt-3 mb-5 p-4 w-full rounded-lg bg-white border-[0.3px] ` + (error ? "border-red-500" : "border-gray-500")}>
                                             <input className={`outline-none border-none w-full ` + (error ? "placeholder-red-500" : "")} type='password' placeholder='Nhập mật khẩu của bạn...' onChange={e => setPassword(e.target.value)}/>
                                         </div>
-                                        <div className="mt-5 flex justify-end h-10 w-full">
+                                        <div className="mt-5 flex justify-between h-10 w-full">
+                                            <button type='button' className="font-poppin font-light text-sm">
+                                                Bạn quên mật khẩu?
+                                            </button>
+
                                             <button type='submit' className="h-10 w-10">
                                                 <img src="src/assets/nextbtn.svg" />
                                             </button>
                                         </div>
                                     </form>
-                                    <button className="font-poppin font-light text-xs">
-                                        Forgot your password?
-                                    </button>
                                 </div>
                             </div>
                         </div>

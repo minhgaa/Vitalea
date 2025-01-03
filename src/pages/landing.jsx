@@ -56,20 +56,20 @@ const Landing = () => {
             </form>
             <div className=" xl:pl-20 xl:pr-20 pt-16  pb-16 pl-10 pr-8 flex items-center justify-between">
                 <div className="w-[60%] mb-20 h-auto flex flex-col text-white font-cabin">
-                    <span className="pb-10 text-7xl"> Easy booking<br /> appointment online</span>
+                    <span className="pb-10 text-7xl"> Dễ dàng đặt <br /> lịch khám trực tuyến</span>
                     <ul className="ml-8 list-disc mb-10 space-y-5 text-3xl ">
-                        <li>Find the right doctor for your condition.</li>
-                        <li>Booking based on your free time.</li>
-                        <li>Simple interface, easy to use.</li>
+                        <li>Tìm bác sĩ đúng với bệnh cần khám</li>
+                        <li>Đặt khám vào thời gian rảnh của bạn.</li>
+                        <li>Giao diện đơn giản, dễ sử dụng.</li>
                     </ul>
-                    <button className="w-[200px] h-[50px] text-xl rounded-full bg-white text-customBlue1">Booking</button>
+                    <button className="w-[200px] h-[50px] text-xl rounded-full bg-white text-customBlue1">Đặt ngay</button>
                 </div>
                 <img src="src/assets/booking.png"
                     className="max-h-[600px]" />
             </div>
             <div className="p-14 flex flex-col bg-white h-[95%] text-customBlue1 rounded-2xl w-full relative">
                 <span className="mb-4 text-7xl">
-                                Sự đa dạng của các chuyên khoa</span>
+                                Đa dạng các chuyên khoa</span>
                 <span className="text-3xl">Mỗi chuyên khoa, một bước tiến tới sự xuất sắc.</span>
                 {/* <div className="mt-10 w-[100%] overflow-x-scroll overflow-y-hidden xl:text-customBlue1 text-white font-cabin text-xl">
                     <div className="w-[2000px] h-full flex space-x-8">
@@ -97,7 +97,7 @@ const Landing = () => {
                 <Specialty/>
             </div>
             <div className="h-[700px] p-20 flex flex-col items-center relative">
-                    <span className="font-cabin text-4xl text-white">Our 100+ doctors with extensive experience.</span>
+                    <span className="font-cabin text-4xl text-white">Hơn 100 bác sĩ dày dặn kinh nghiệm.</span>
                     <div className="w-full overflow-x-scroll h-full">
                         <Doctorlist doctors={doctors} />
                     </div>
