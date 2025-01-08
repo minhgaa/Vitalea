@@ -20,6 +20,15 @@ const Landing = () => {
         getDoctors()
     }, [getDoctors])
 
+    useEffect(() => {
+        const getUser = async () => {
+            const response = await axiosInstance.get('/auth/login/google');
+
+        }
+        
+        getUser();
+    }, [])
+
     const images = [
         { src: "src/assets/internal.png", label: "Internal medicine" },
         { src: "src/assets/obste.png", label: "Obstetrics & gynecology" },

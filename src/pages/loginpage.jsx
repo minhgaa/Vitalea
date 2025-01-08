@@ -12,6 +12,9 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState('')
     const [verification, setVerification] = useState(false)
     const navigate = useNavigate()
+    const googleLogin = () => {
+        window.open("http://localhost:3000/api/auth/google", "_self");
+    }
     const handleLogin = async (event) => {
         event.preventDefault()
         setLoading(true)
@@ -81,10 +84,18 @@ const Login = () => {
                                         <div className={`mt-3 mb-5 p-4 w-full rounded-lg bg-white border-[0.3px] ` + (error ? "border-red-500" : "border-gray-500")}>
                                             <input className={`outline-none border-none w-full ` + (error ? "placeholder-red-500" : "")} type='password' placeholder='Nhập mật khẩu của bạn...' onChange={e => setPassword(e.target.value)}/>
                                         </div>
-                                        <div className="mt-5 flex justify-between h-10 w-full">
-                                            <button type='button' className="font-poppin font-light text-sm">
-                                                Bạn quên mật khẩu?
+                                        <div className="mt-8 flex justify-between items-center h-10 w-full">
+                                            <button onClick={googleLogin} type="button" className="h-[50px] border-[0.5px] border-gray-500 flex justify-center items-center rounded-full bg-white px-8 text-black font-semibold text-xs font-poppin">
+                                                <img
+                                                    src="src/assets/google.png"
+                                                    className="w-6 mr-3 h-6"
+                                                />
+                                                Log in with Google
                                             </button>
+
+                                            {/* <button type='button' className="font-poppin font-light text-sm">
+                                                Bạn quên mật khẩu?
+                                            </button> */}
 
                                             <button type='submit' className="h-10 w-10">
                                                 <img src="src/assets/nextbtn.svg" />
